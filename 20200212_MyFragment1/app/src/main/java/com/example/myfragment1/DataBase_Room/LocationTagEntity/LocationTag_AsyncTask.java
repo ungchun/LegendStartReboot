@@ -42,7 +42,7 @@ public class LocationTag_AsyncTask {
 
         @Override
         protected Void doInBackground(LocationTagEntity... locationTagEntities) {
-            locationTag_dao.delete(locationTagEntities);
+            locationTag_dao.delete(locationTagEntities[0]);
             return null;
         }
     }
@@ -67,7 +67,7 @@ public class LocationTag_AsyncTask {
 
         @Override
         protected List<LocationTagEntity> doInBackground(Integer... integers) {
-            return (List<LocationTagEntity>) new SendingArrayList().SendingArrayList(locationTag_dao.getDataByLocationId(integers[0]));
+            return locationTag_dao.getDataByLocationId(integers[0]);
         }
 
     }
