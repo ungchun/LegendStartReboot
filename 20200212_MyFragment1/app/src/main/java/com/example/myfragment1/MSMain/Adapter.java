@@ -1,16 +1,34 @@
 package com.example.myfragment1.MSMain;
 
+import android.app.AlertDialog;
+import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
+import com.example.myfragment1.DataBase_Room.DirectoryRoom.DirectoryDao;
+import com.example.myfragment1.DataBase_Room.DirectoryRoom.DirectoryDatabase;
+import com.example.myfragment1.DataBase_Room.DirectoryRoom.DirectoryEntity;
+import com.example.myfragment1.DataBase_Room.DirectoryRoom.Directory_AsyncTask;
+import com.example.myfragment1.DataBase_Room.LocationRoom.LocationDatabase;
+import com.example.myfragment1.DataBase_Room.LocationRoom.Location_AsyncTask;
+import com.example.myfragment1.DataBase_Room.Repository.LocationRepository;
+import com.example.myfragment1.LocationList_RecyclerView.LocationViewModel;
 import com.example.myfragment1.R;
+import com.naver.maps.map.widget.LocationButtonView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,24 +61,20 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     private OnItemClickListener mListener = null;
 
+    private Application application;
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mListener = listener;
     }
 
 
-    Adapter(Context context, List<String> data, ArrayList<String[]> Tag) {
+    Adapter(Context context, List<String> data, ArrayList<String[]> Tag, Application application) {
         this.layoutInflater = LayoutInflater.from(context);
         this.title = data;
         this.tag = Tag;
+        this.application = application;
         mcontext = context;
     }
-
-//    Adapter(Context context, List<String> des_data, List<String> data){
-//        this.layoutInflater = LayoutInflater.from(context);
-//        this.data = data;
-//        this.des_data = des_data;
-//        mcontext = context;
-//    }
 
     class HeaderViewHolder extends ViewHolder {
 
@@ -84,10 +98,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             holder = new ViewHolder(view);
         }
         return (ViewHolder) holder;
-//        return new ViewHolder(view);
-
-//        View view = layoutInflater.inflate(R.layout.ms_recy_test, parent, false);
-//        return new ViewHolder(view);
     }
 
     @Override
@@ -97,99 +107,26 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-//        String Title = title.get(position);
-//        String des = des_data.get(position);
-//        String[] Tag_1 = tag.get(position);
-//        holder.textTitle.setText("실험");
-//        holder.textTitle.setText(Title);
-//        holder.textDescription.setText(des);
-
         if(holder instanceof HeaderViewHolder){
-            //없어도 뜨네 ? ㅅㅂ 뭐지
             HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
         }
         else{
             String Title = title.get(position-1);
             holder.textTitle.setText(Title);
-//            String[] Tag_1 = tag.get(position-1);
-////             tag가 0개일때
-//            if (Tag_1.length == 0) {
-//                holder.Total.setText(Integer.toString(Tag_1.length));
-//            }
-//            // tag가 1개일떄
-//            else if (Tag_1.length == 1) {
-//                holder.textDescription_1.setText(Tag_1[0]);
-//                holder.textDescription_1.setVisibility(View.VISIBLE);
-////                 Total은 나중에 거래처 갯수표현할꺼임
-//                holder.Total.setText(Integer.toString(Tag_1.length));
-//            }
-//            // tag가 2개일떄
-//            else if (Tag_1.length == 2) {
-////           holder.textDescription.setText(Tag_1[0]+" "+Tag_1[1]);
-//                holder.textDescription_1.setText(Tag_1[0]);
-//                holder.textDescription_1.setVisibility(View.VISIBLE);
-//                holder.textDescription_2.setText(Tag_1[1]);
-//                holder.textDescription_2.setVisibility(View.VISIBLE);
-//                holder.Total.setText(Integer.toString(Tag_1.length));
-//        }
-//        // tag가 3개일떄
-//            else if (Tag_1.length == 3) {
-////           holder.textDescription.setText(Tag_1[0]+" "+Tag_1[1]+" "+Tag_1[2]);
-//                holder.textDescription_1.setText(Tag_1[0]);
-//                holder.textDescription_1.setVisibility(View.VISIBLE);
-//                holder.textDescription_2.setText(Tag_1[1]);
-//                holder.textDescription_2.setVisibility(View.VISIBLE);
-//                holder.textDescription_3.setText(Tag_1[2]);
-//                holder.textDescription_3.setVisibility(View.VISIBLE);
-//                holder.Total.setText(Integer.toString(Tag_1.length));
-//            }
-//            // tag가 4개일떄
-//            else if (Tag_1.length == 4) {
-////           holder.textDescription.setText(Tag_1[0]+" "+Tag_1[1]+" "+Tag_1[2]+" "+Tag_1[3]);
-//                holder.textDescription_1.setText(Tag_1[0]);
-//                holder.textDescription_1.setVisibility(View.VISIBLE);
-//                holder.textDescription_2.setText(Tag_1[1]);
-//                holder.textDescription_2.setVisibility(View.VISIBLE);
-//                holder.textDescription_3.setText(Tag_1[2]);
-//                holder.textDescription_3.setVisibility(View.VISIBLE);
-//                holder.textDescription_4.setText(Tag_1[3]);
-//                holder.textDescription_4.setVisibility(View.VISIBLE);
-//                holder.Total.setText(Integer.toString(Tag_1.length));
-//            }
-//            // tag가 5개일떄
-//            else if (Tag_1.length == 5) {
-////           holder.textDescription.setText(Tag_1[0]+" "+Tag_1[1]+" "+Tag_1[2]+" "+Tag_1[3]+" "+Tag_1[4]);
-//                holder.textDescription_1.setText(Tag_1[0]);
-//                holder.textDescription_1.setVisibility(View.VISIBLE);
-//                holder.textDescription_2.setText(Tag_1[1]);
-//                holder.textDescription_2.setVisibility(View.VISIBLE);
-//                holder.textDescription_3.setText(Tag_1[2]);
-//                holder.textDescription_3.setVisibility(View.VISIBLE);
-//                holder.textDescription_4.setText(Tag_1[3]);
-//                holder.textDescription_4.setVisibility(View.VISIBLE);
-//                holder.textDescription_5.setText(Tag_1[4]);
-//                holder.textDescription_5.setVisibility(View.VISIBLE);
-//                holder.Total.setText(Integer.toString(Tag_1.length));
-//            }
-
         }
 
-//        holder.btnTitle.setText(btn);
     }
 
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView textTitle, textDescription_1, textDescription_2, textDescription_3, textDescription_4, textDescription_5, Total;
+
+        //DirectoryDatabase db = Room.databaseBuilder(mcontext, DirectoryDatabase.class, "directory_db").build();
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-//            btnTitle = itemView.findViewById(R.id.recy_test_btn);
             textTitle = (TextView)itemView.findViewById(R.id.textView);
-//            textDescription_1 = (TextView)itemView.findViewById(R.id.textView2);
-//            textDescription_2 = (TextView)itemView.findViewById(R.id.textView3);
-//            textDescription_3 = (TextView)itemView.findViewById(R.id.textView4);
-//            textDescription_4 = (TextView)itemView.findViewById(R.id.textView5);
-//            textDescription_5 = (TextView)itemView.findViewById(R.id.textView6);
             Total = (TextView)itemView.findViewById(R.id.textView7);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -198,7 +135,46 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                     int pos = getAdapterPosition();
                     if (pos != RecyclerView.NO_POSITION) {
                         if(pos == 0){
-                            Toast.makeText(mcontext,"add Btn",Toast.LENGTH_SHORT).show();
+                            // 삭제는 어케하누?
+//                            new DeleteAsyncTask(db.directoryDao()).execute();
+                            AlertDialog.Builder ad = new AlertDialog.Builder(mcontext);
+                            ad.setIcon(R.mipmap.ic_launcher);
+                            ad.setTitle("제목");
+                            ad.setMessage("directory의 이름을 적어주세요");
+
+                            final EditText et = new EditText(mcontext);
+                            et.setSingleLine(true);
+                            ad.setView(et);
+
+                            // 긍정적인 버튼
+                            ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+//                                        String result = et.getText().toString();
+
+                                    // 이 씨 발
+
+                                    LocationRepository locationRepository = new LocationRepository(application);
+                                    locationRepository.insert_directory(new DirectoryEntity(et.getText().toString()));
+//                                    new Directory_AsyncTask.InsertDirectoryAsyncTask(db.directoryDao()).execute(new DirectoryEntity(et.getText().toString()));
+//                                    recy_refresh_frag = true;
+//                                    MainActivity.recyclerView.setAdapter(Adapter.this);
+
+
+//                                        Toast.makeText(mcontext,db.directoryDao().getAll().toString(),Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss(); // 모든 작업이 끝났으니 dialog를 닫어라
+                                }
+                            });
+
+                            // 부정적인 버튼
+                            ad.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss(); // 모든 작업이 끝났으니 dialog를 닫어라
+                                }
+                            });
+                            ad.show();
+
                         }
                         else if (mListener != null) {
                             mListener.onItemClick(v, pos-1);

@@ -3,6 +3,9 @@ package com.example.myfragment1.DataBase_Room.Repository;
 import android.app.Application;
 import androidx.lifecycle.LiveData;
 
+import com.example.myfragment1.DataBase_Room.DirectoryRoom.DirectoryDao;
+import com.example.myfragment1.DataBase_Room.DirectoryRoom.DirectoryEntity;
+import com.example.myfragment1.DataBase_Room.DirectoryRoom.Directory_AsyncTask;
 import com.example.myfragment1.DataBase_Room.LocationRoom.LocationDatabase;
 import com.example.myfragment1.DataBase_Room.LocationRoom.LocationEntity;
 import com.example.myfragment1.DataBase_Room.LocationRoom.LocationEntity_Dao;
@@ -21,6 +24,8 @@ public class LocationRepository {
     private TagEntity_Dao tagEntity_dao;
     private LocationTag_Dao locationTag_dao;
 
+    private DirectoryDao directoryDao;
+
     private LiveData<List<LocationEntity>> allLocations;
     private LiveData<List<TagEntity>> allTags;
     private LiveData<List<LocationTagEntity>> allLocationTagData;
@@ -37,6 +42,7 @@ public class LocationRepository {
         this.locationEntity_dao = locationDatabase.locationEntity_dao();
         this.tagEntity_dao = locationDatabase.tagEntity_dao();
         this.locationTag_dao = locationDatabase.locationTag_dao();
+        this.directoryDao = locationDatabase.directoryDao();
 
         allLocations = locationEntity_dao.getAllData();
         allLocationTagData = locationTag_dao.getAllLocationTagData();
@@ -79,6 +85,9 @@ public class LocationRepository {
     public List<TagEntity> searchAboutLocationId(int position){
         final List<TagEntity> result = (List<TagEntity>) new TagAsyncTask.SearchAboutLocationId(tagEntity_dao).execute(position);
         return result;
+    }
+    public void insert_directory (DirectoryEntity directoryEntity){
+        new Directory_AsyncTask.InsertDirectoryAsyncTask(directoryDao).execute();
     }
 
 
