@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.myfragment1">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MSMain.excelActivity"></activity>
+        <activity android:name=".MSMain.todoActivity" />
+        <activity android:name=".MSMain.settingActivity" />
+        <activity android:name=".MSMain.homeActivity" />
+        <activity android:name=".LocationList_RecyclerView.LocationList" />
+        <activity android:name=".HepAddActivity.AddMainActivity"/>
+        <activity android:name=".MSMain.MainActivity"
+            android:windowSoftInputMode="adjustPan">
+            <!--출처: https://duzi077.tistory.com/283 [키패드 눌러도 화면 고정]-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="" />
+    </application>
+
+</manifest>
