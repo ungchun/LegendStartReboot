@@ -17,7 +17,7 @@ import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity;
 import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity_Dao;
 
 // DireectoryEntity 수정
-@Database(entities = {LocationEntity.class, LocationTagEntity.class, TagEntity.class, DirectoryEntity.class}, version = 1
+@Database(entities = {LocationEntity.class, LocationTagEntity.class, TagEntity.class}, version = 1
 //          get rid of warning
 //        ,exportSchema = false
 )
@@ -27,7 +27,7 @@ public abstract class LocationDatabase extends RoomDatabase {
     public abstract TagEntity_Dao tagEntity_dao();
     public abstract LocationTag_Dao locationTag_dao();
     // DireectoryDao 수정
-    public abstract DirectoryDao directoryDao();
+//    public abstract DirectoryDao directoryDao();
 
     public static synchronized LocationDatabase getInstance(Context context){
         if(instance == null){
@@ -57,7 +57,7 @@ public abstract class LocationDatabase extends RoomDatabase {
             locationEntity_dao = locationDatabase.locationEntity_dao();
             tagEntity_dao = locationDatabase.tagEntity_dao();
             locationTag_dao = locationDatabase.locationTag_dao();
-            directoryDao = locationDatabase.directoryDao();
+//            directoryDao = locationDatabase.directoryDao();
         }
 
         @Override

@@ -42,7 +42,7 @@ public class LocationRepository {
         this.locationEntity_dao = locationDatabase.locationEntity_dao();
         this.tagEntity_dao = locationDatabase.tagEntity_dao();
         this.locationTag_dao = locationDatabase.locationTag_dao();
-        this.directoryDao = locationDatabase.directoryDao();
+//        this.directoryDao = locationDatabase.directoryDao();
 
         allLocations = locationEntity_dao.getAllData();
         allLocationTagData = locationTag_dao.getAllLocationTagData();

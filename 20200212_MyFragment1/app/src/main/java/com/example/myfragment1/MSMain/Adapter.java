@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
@@ -117,17 +120,39 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     }
 
+    // 여기 지워
+    private static class InsertAsyncTask extends AsyncTask<DirectoryEntity, Void, Void> {
+        private DirectoryDao mDierctoryDao;
+
+        public InsertAsyncTask(DirectoryDao directoryDao) {
+            this.mDierctoryDao = directoryDao;
+        }
+
+        @Override
+        protected Void doInBackground(DirectoryEntity... directoryEntities) {
+            return null;
+        }
+    }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView textTitle, textDescription_1, textDescription_2, textDescription_3, textDescription_4, textDescription_5, Total;
 
-        //DirectoryDatabase db = Room.databaseBuilder(mcontext, DirectoryDatabase.class, "directory_db").build();
+        DirectoryDatabase db = Room.databaseBuilder(mcontext, DirectoryDatabase.class, "directory_db").build();
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textTitle = (TextView)itemView.findViewById(R.id.textView);
             Total = (TextView)itemView.findViewById(R.id.textView7);
+
+//            // LiveData
+//            db.directoryDao().getAll().observe((LifecycleOwner) mcontext, new Observer<List<DirectoryEntity>>() {
+//                @Override
+//                public void onChanged(List<DirectoryEntity> directoryEntities) {
+//                    Log.d("1","확인");
+//                }
+//            });
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -152,10 +177,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                                 public void onClick(DialogInterface dialog, int which) {
 //                                        String result = et.getText().toString();
 
-                                    // 이 씨 발
+                                    // 이 씨 발 ( 찬섭이형이 적은 코드 두줄 )
+                                    new InsertAsyncTask(db.directoryDao()).execute(new DirectoryEntity(et.getText().toString()));
+//                                    LocationRepository locationRepository = new LocationRepository(application);
+//                                    locationRepository.insert_directory(new DirectoryEntity(et.getText().toString()));
 
-                                    LocationRepository locationRepository = new LocationRepository(application);
-                                    locationRepository.insert_directory(new DirectoryEntity(et.getText().toString()));
 //                                    new Directory_AsyncTask.InsertDirectoryAsyncTask(db.directoryDao()).execute(new DirectoryEntity(et.getText().toString()));
 //                                    recy_refresh_frag = true;
 //                                    MainActivity.recyclerView.setAdapter(Adapter.this);

@@ -36,9 +36,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.ListFragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
+import com.example.myfragment1.DataBase_Room.DirectoryRoom.DirectoryDatabase;
+import com.example.myfragment1.DataBase_Room.DirectoryRoom.DirectoryEntity;
 import com.example.myfragment1.HepAddActivity.AddMainActivity;
 import com.example.myfragment1.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -162,6 +166,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return false;
             }
         });
+
+//         여기 조져야함
+        DirectoryDatabase db = Room.databaseBuilder(this, DirectoryDatabase.class, "directory_db").build();
+//        db.directoryDao().getAll().observe(this, new Observer<List<DirectoryEntity>>() {
+//            @Override
+//            public void onChanged(List<DirectoryEntity> directoryEntities) {
+//                for(int i = 0; i < directoryEntities.size(); i++){
+////                    recy_title.add(directoryEntities.get(i).toString());
+////                    Log.d("1",)
+//                }
+//            }
+//        });
 
         // testView
         test_view = findViewById(R.id.hh);
