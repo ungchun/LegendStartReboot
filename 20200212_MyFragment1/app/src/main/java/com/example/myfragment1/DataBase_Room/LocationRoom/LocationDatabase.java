@@ -9,12 +9,15 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.myfragment1.DataBase_Room.DirectoryRoom.DirectoryDao;
+import com.example.myfragment1.DataBase_Room.DirectoryRoom.DirectoryEntity;
 import com.example.myfragment1.DataBase_Room.LocationTagEntity.LocationTagEntity;
 import com.example.myfragment1.DataBase_Room.LocationTagEntity.LocationTag_Dao;
 import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity;
 import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity_Dao;
 
-@Database(entities = {LocationEntity.class, LocationTagEntity.class, TagEntity.class}, version = 1
+// DireectoryEntity 수정
+@Database(entities = {LocationEntity.class, LocationTagEntity.class, TagEntity.class, DirectoryEntity.class}, version = 1
 //          get rid of warning
 //        ,exportSchema = false
 )
@@ -23,6 +26,8 @@ public abstract class LocationDatabase extends RoomDatabase {
     public abstract LocationEntity_Dao locationEntity_dao();
     public abstract TagEntity_Dao tagEntity_dao();
     public abstract LocationTag_Dao locationTag_dao();
+    // DireectoryDao 수정
+    public abstract DirectoryDao directoryDao();
 
     public static synchronized LocationDatabase getInstance(Context context){
         if(instance == null){
@@ -47,10 +52,12 @@ public abstract class LocationDatabase extends RoomDatabase {
         private LocationEntity_Dao locationEntity_dao;
         private TagEntity_Dao tagEntity_dao;
         private LocationTag_Dao locationTag_dao;
+        private DirectoryDao directoryDao;
         private PopulateDbAsyncTask(LocationDatabase locationDatabase){
             locationEntity_dao = locationDatabase.locationEntity_dao();
             tagEntity_dao = locationDatabase.tagEntity_dao();
             locationTag_dao = locationDatabase.locationTag_dao();
+            directoryDao = locationDatabase.directoryDao();
         }
 
         @Override
@@ -60,5 +67,4 @@ public abstract class LocationDatabase extends RoomDatabase {
             return null;
         }
     }
-
 }

@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Adapter adapter;
     TextView recy_allSee;
     TextView back_allSee;
-
+    View test_view;
 
     //애니메이션
     Animation animation;
@@ -163,6 +163,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        // testView
+        test_view = findViewById(R.id.hh);
+
         //상단바
         searchlinearlayout = findViewById(R.id.linearLayoutSearch);
 
@@ -234,26 +237,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fa = new MainFragment();
         fragmentManager.beginTransaction().replace(R.id.frameLayout, fa).commit();
 
-        //recyclerView test Tag 배열선언
-//        final String[] tag1 = {"소고기", "안녕하세요", "김성훈입니다", "방가방가", "소고소고소고소고"};
-//        String[] tag2 = {"1"};
-//        String[] tag3 = {"1", "2", "3", "4"};
-//        String[] tag4 = {"1", "2", "3"};
-//        String[] tag5 = {"1", "2"};
-        //recyclerView test Title ArrayList
         recy_title = new ArrayList<>();
-        recy_title.add("Frist");
-        recy_title.add("Two");
-        recy_title.add("Third");
-        recy_title.add("Four");
-        recy_title.add("FIve");
-        //recyclerView test Tag ArrayList
-//        recy_Tag = new ArrayList<String[]>();
-//        recy_Tag.add(tag1);
-//        recy_Tag.add(tag2);
-//        recy_Tag.add(tag3);
-//        recy_Tag.add(tag4);
-//        recy_Tag.add(tag5);
+//        recy_title.add("Frist");
+//        recy_title.add("Two");
+//        recy_title.add("Third");
+//        recy_title.add("Four");
+//        recy_title.add("FIve");
 
         // recyclerView
         recyclerView = findViewById(R.id.recyclerView);
@@ -261,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // 어떤형태로 배치될 아이템 뷰를 만들것인지 결정하는요소 -> LayoutManager -> Linear -> 수직 또는 수평으로 일렬형태로 배치
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         // recyclerView에 표시될 아이템 뷰를 생성하는 역할 adapter
-        adapter = new Adapter(getApplicationContext(), recy_title, recy_Tag);
+        adapter = new Adapter(this, recy_title, recy_Tag, this.getApplication());
         recyclerView.setAdapter(adapter);
 
         //recyclerview pos (위치) 값 가져와서 items 리스트 안에 있는 pos (위치)에 있는 Title 가져옴
@@ -279,30 +268,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         recy_allSee = findViewById(R.id.recy_allSee);
 
-        recy_allSee.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Log.e("1","ㅅㅄㅂ");
-                Intent intent = new Intent(getApplicationContext(), AllSeeActivity.class);
-                startActivity(intent);
-                CustomIntent.customType(getApplicationContext(), "left-to-right");
-                Toast.makeText(getApplicationContext(), "전체보기클릭", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         // spinner 터치(클릭) 시 이벤트처리
         spinner.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN && recyFrag == false) {
-                    //애니메
-                    Toast.makeText(getApplicationContext(), "스피너 오류", Toast.LENGTH_SHORT).show();
-
-                    showRecyclerView(); //리사이클 보여주고 플래그 true 로 변경
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.translate);
+                    test_view.setAnimation(animation);
+                    test_view.setVisibility(mView.VISIBLE);
+                    Log.d("Search", "1");
+                    recyFrag = true;
                 } else if (event.getAction() == MotionEvent.ACTION_DOWN && recyFrag == true) {
-                    hideRecyclerView(); //리사이클 가리고 플래그 false 로 변경
+                    Animation animationH = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.translatehide);
+                    test_view.setAnimation(animationH);
+                    test_view.setVisibility(mView.GONE);
+                    Log.d("Search", "2");
+                    recyFrag = false;
                 }
+                recy_allSee.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mView.getContext(), AllSeeActivity.class);
+                        startActivity(intent);
+                        CustomIntent.customType(mView.getContext(), "left-to-right");
+                        Toast.makeText(getApplicationContext(), "전체보기클릭", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                Log.d("Search", "3");
                 return true;
+//                if (event.getAction() == MotionEvent.ACTION_DOWN && recyFrag == false) {
+//                    //애니메
+//                    Toast.makeText(getApplicationContext(), "스피너 오류", Toast.LENGTH_SHORT).show();
+//
+//                    showRecyclerView(); //리사이클 보여주고 플래그 true 로 변경
+//                } else if (event.getAction() == MotionEvent.ACTION_DOWN && recyFrag == true) {
+//                    hideRecyclerView(); //리사이클 가리고 플래그 false 로 변경
+//                }
+//                return true;
             }
         });
 

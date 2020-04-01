@@ -67,6 +67,23 @@ public class RecyclerviewSecondSwipeDismissHelper extends ItemTouchHelper.Simple
             }
         }).show();
         Toast.makeText(viewHolder.itemView.getContext(), "Success Undo", Toast.LENGTH_SHORT).show();
+//        LocationRepository locationRepository;
+//        locationEntity = locationViewModel.delete(recyclerAdapter.getLocationEntityAt(viewHolder.getAdapterPosition()));
+//
+//        final TagEntity[] tagList = tagDatabase.tagEntity_dao().multipleSelectionByForeignKey(locationEntity.getId()).toArray(new TagEntity[0]);
+//        tagDatabase.tagEntity_dao().delete(tagList);
+//        Log.d("tag","Successful dismiss Tag");
+//
+//        Snackbar.make(viewHolder.itemView, "", Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                locationViewModel.insert(locationEntity);
+//                tagDatabase.tagEntity_dao().insert(tagList);
+//                Log.d("tag","Successful Undo");
+//            }
+//        }).show();
+//        Toast.makeText(viewHolder.itemView.getContext(), "Success Undo", Toast.LENGTH_SHORT).show();
+
 
     }
 }
