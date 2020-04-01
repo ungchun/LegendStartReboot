@@ -168,16 +168,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
 //         여기 조져야함
-        DirectoryDatabase db = Room.databaseBuilder(this, DirectoryDatabase.class, "directory_db").build();
-//        db.directoryDao().getAll().observe(this, new Observer<List<DirectoryEntity>>() {
-//            @Override
-//            public void onChanged(List<DirectoryEntity> directoryEntities) {
-//                for(int i = 0; i < directoryEntities.size(); i++){
-////                    recy_title.add(directoryEntities.get(i).toString());
-////                    Log.d("1",)
-//                }
-//            }
-//        });
+        DirectoryDatabase db = DirectoryDatabase.getInstance(getApplicationContext());
+
+        db.directoryDao().getAll().observe(this, new Observer<List<DirectoryEntity>>() {
+            @Override
+            public void onChanged(List<DirectoryEntity> directoryEntities) {
+                for(int i = 0; i < directoryEntities.size(); i++){
+                    recy_title.add(directoryEntities.get(i).toString());
+                    Log.d("1","sibal"+Integer.toString(directoryEntities.size()));
+//                    Log.d("1",)
+                }
+            }
+        });
 
         // testView
         test_view = findViewById(R.id.hh);

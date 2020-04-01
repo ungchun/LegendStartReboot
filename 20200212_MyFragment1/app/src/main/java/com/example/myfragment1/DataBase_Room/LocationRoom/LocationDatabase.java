@@ -39,6 +39,7 @@ public abstract class LocationDatabase extends RoomDatabase {
         }
         return instance;
     }
+
     private static Callback locationcallback = new Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {

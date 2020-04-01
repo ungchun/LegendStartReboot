@@ -28,6 +28,7 @@ import com.example.myfragment1.DataBase_Room.DirectoryRoom.DirectoryEntity;
 import com.example.myfragment1.DataBase_Room.DirectoryRoom.Directory_AsyncTask;
 import com.example.myfragment1.DataBase_Room.LocationRoom.LocationDatabase;
 import com.example.myfragment1.DataBase_Room.LocationRoom.Location_AsyncTask;
+import com.example.myfragment1.DataBase_Room.Repository.DirectoryRepository;
 import com.example.myfragment1.DataBase_Room.Repository.LocationRepository;
 import com.example.myfragment1.LocationList_RecyclerView.LocationViewModel;
 import com.example.myfragment1.R;
@@ -138,20 +139,24 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView textTitle, textDescription_1, textDescription_2, textDescription_3, textDescription_4, textDescription_5, Total;
 
-        DirectoryDatabase db = Room.databaseBuilder(mcontext, DirectoryDatabase.class, "directory_db").build();
+        DirectoryDatabase db = DirectoryDatabase.getInstance(mcontext);
+
+        DirectoryRepository directoryRepository = new DirectoryRepository(mcontext);
+
+//        DirectoryDatabase db = Room.databaseBuilder(mcontext, DirectoryDatabase.class, "directory_db").build();
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textTitle = (TextView)itemView.findViewById(R.id.textView);
             Total = (TextView)itemView.findViewById(R.id.textView7);
 
-//            // LiveData
-//            db.directoryDao().getAll().observe((LifecycleOwner) mcontext, new Observer<List<DirectoryEntity>>() {
-//                @Override
-//                public void onChanged(List<DirectoryEntity> directoryEntities) {
-//                    Log.d("1","확인");
-//                }
-//            });
+            // LiveData
+            db.directoryDao().getAll().observe((LifecycleOwner) mcontext, new Observer<List<DirectoryEntity>>() {
+                @Override
+                public void onChanged(List<DirectoryEntity> directoryEntities) {
+                    Log.d("1","확인 여기요"+directoryEntities.size());
+                }
+            });
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -178,7 +183,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 //                                        String result = et.getText().toString();
 
                                     // 이 씨 발 ( 찬섭이형이 적은 코드 두줄 )
-                                    new InsertAsyncTask(db.directoryDao()).execute(new DirectoryEntity(et.getText().toString()));
+
+                                    directoryRepository.insert_Directory(new DirectoryEntity(et.getText().toString()));
+//                                    new InsertAsyncTask(db.directoryDao()).execute(new DirectoryEntity(et.getText().toString()));
 //                                    LocationRepository locationRepository = new LocationRepository(application);
 //                                    locationRepository.insert_directory(new DirectoryEntity(et.getText().toString()));
 
