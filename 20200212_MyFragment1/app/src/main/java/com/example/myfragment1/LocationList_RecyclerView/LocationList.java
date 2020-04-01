@@ -40,7 +40,7 @@ public class LocationList extends AppCompatActivity {
         setRecyclerView();
 
         locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
-        locationViewModel.getAllLocationData().observe(this, new Observer<List<LocationEntity>>() {
+        locationViewModel.getAllLocationData_LocationEntity().observe(this, new Observer<List<LocationEntity>>() {
             @Override
             public void onChanged(List<LocationEntity> locationEntities) {
                 //Update RecyclerView
