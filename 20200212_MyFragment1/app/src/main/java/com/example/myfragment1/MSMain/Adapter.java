@@ -49,6 +49,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private final int TYPE_ITEM = 1;
 
 
+
     @Override
     public int getItemViewType(int position) {
         if (position == 0)
@@ -118,22 +119,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             String Title = title.get(position-1);
             holder.textTitle.setText(Title);
         }
-
     }
 
-    // 여기 지워
-    private static class InsertAsyncTask extends AsyncTask<DirectoryEntity, Void, Void> {
-        private DirectoryDao mDierctoryDao;
-
-        public InsertAsyncTask(DirectoryDao directoryDao) {
-            this.mDierctoryDao = directoryDao;
-        }
-
-        @Override
-        protected Void doInBackground(DirectoryEntity... directoryEntities) {
-            return null;
-        }
-    }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -154,6 +141,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             db.directoryDao().getAll().observe((LifecycleOwner) mcontext, new Observer<List<DirectoryEntity>>() {
                 @Override
                 public void onChanged(List<DirectoryEntity> directoryEntities) {
+                    Log.d("1","title 확인"+title.size());
                     Log.d("1","확인 여기요"+directoryEntities.size());
                 }
             });
@@ -180,21 +168,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                             ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-//                                        String result = et.getText().toString();
-
-                                    // 이 씨 발 ( 찬섭이형이 적은 코드 두줄 )
-
                                     directoryRepository.insert_Directory(new DirectoryEntity(et.getText().toString()));
-//                                    new InsertAsyncTask(db.directoryDao()).execute(new DirectoryEntity(et.getText().toString()));
-//                                    LocationRepository locationRepository = new LocationRepository(application);
-//                                    locationRepository.insert_directory(new DirectoryEntity(et.getText().toString()));
-
-//                                    new Directory_AsyncTask.InsertDirectoryAsyncTask(db.directoryDao()).execute(new DirectoryEntity(et.getText().toString()));
-//                                    recy_refresh_frag = true;
-//                                    MainActivity.recyclerView.setAdapter(Adapter.this);
-
-
-//                                        Toast.makeText(mcontext,db.directoryDao().getAll().toString(),Toast.LENGTH_SHORT).show();
                                     dialog.dismiss(); // 모든 작업이 끝났으니 dialog를 닫어라
                                 }
                             });
