@@ -18,15 +18,14 @@ public class Location_AsyncTask {
 //        this.allLocations = locationEntity_dao.getAllData();
     }
 
-    public static class InsertLocationAsyncTask extends AsyncTask<LocationEntity,Void, Void>{
+    public static class InsertLocationAsyncTask extends AsyncTask<LocationEntity,Void, Integer>{
         private LocationEntity_Dao locationEntity_dao;
         public InsertLocationAsyncTask(LocationEntity_Dao locationEntity_dao){
             this.locationEntity_dao = locationEntity_dao;
         }
         @Override
-        protected Void doInBackground(LocationEntity... locationEntities) {
-            locationEntity_dao.insert(locationEntities[0]);
-            return null;
+        protected Integer doInBackground(LocationEntity... locationEntities) {
+            return (int)locationEntity_dao.insert(locationEntities[0]);
         }
     }
     public static class UpdateLocationAsyncTask extends AsyncTask<LocationEntity,Void, Void> {
@@ -62,5 +61,4 @@ public class Location_AsyncTask {
             return null;
         }
     }
-
 }

@@ -32,6 +32,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.myfragment1.DataBase_Room.LocationRoom.LocationDatabase;
 import com.example.myfragment1.DataBase_Room.LocationRoom.LocationEntity;
+import com.example.myfragment1.DataBase_Room.LocationTagEntity.LocationTagEntity;
 import com.example.myfragment1.DataBase_Room.Repository.LocationRepository;
 import com.example.myfragment1.LocationList_RecyclerView.LocationViewModel;
 import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity;
@@ -302,7 +303,6 @@ public class AddMainActivity extends Activity {
     }
 
     public void storeData(){
-        Log.d("tag","in storeDataMethod ");
         String title = Location_Title.getText().toString();
         String address = Location_Address.getText().toString();
         String detailAddr = Location_DetailAddress.getText().toString();
@@ -312,14 +312,13 @@ public class AddMainActivity extends Activity {
         String longitude = null;
         String timestamp = Long.toString(System.currentTimeMillis());
 
-        Log.d("storeData = ", "_hashTag");
         List<String> _hashTag = EPHashTag.getHashTagar();
         ////String location_Title, String location_Addr, String location_DetailAddr, String location_Phone, String location_Memo, String location_Latitude, String location_Longitude, String location_Timestamp
+
         LocationRepository locationRepository = new LocationRepository(getApplication());
         LocationEntity locationEntity = new LocationEntity(title, address, detailAddr, number, comment, latitude, longitude, timestamp);
-        Log.d("storeData = ", "insert_Location prev");
-        locationRepository.insert_Location(locationEntity);
-        Log.d("storeData = ", "insert_Location next");
+        int location_id = locationRepository.insert_Location(locationEntity);
+
 
         /*
         LocationDatabase locationDatabase = Room.databaseBuilder(this, LocationDatabase.class, "LocationEntity").allowMainThreadQueries().build();
@@ -332,18 +331,15 @@ public class AddMainActivity extends Activity {
          */
 
         if(!_hashTag.isEmpty()) {
-            Log.d("storeData = ", "for prev");
-            for (String tag : _hashTag)
-                locationRepository.insert_Tag(new TagEntity(tag));
-            Log.d("storeData = ", "for next");
+            for (String tag : _hashTag) {
+                int tag_id = locationRepository.insert_Tag(new TagEntity(tag));
+                locationRepository.insert_LocationTag(new LocationTagEntity(location_id,tag_id));
+            }
         }
 
         Intent mainActivityIntent = new Intent(this, MainActivity.class);
-        Log.d("storeData = ", "putExtra prev");
         mainActivityIntent.putExtra(SET_STORE_FLAG, true);
-        Log.d("storeData = ", "putExtra next");
         setResult(MainActivity.ADD_MAIN_ACTIVITY_REPLY_CODE, mainActivityIntent);
-        Log.d("storeData = ", "setResult next");
         finish();
     }
 }
