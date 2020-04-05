@@ -21,6 +21,7 @@ import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity;
 import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity_Dao;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static com.example.myfragment1.DataBase_Room.LocationTagEntity.LocationTag_AsyncTask.*;
 
@@ -53,8 +54,13 @@ public class LocationRepository {
         locationTag_asyncTask = new LocationTag_AsyncTask(application);
 
     }
-    public void insert_Location(LocationEntity locationEntity){
-        new Location_AsyncTask.InsertLocationAsyncTask(locationEntity_dao).execute(locationEntity);
+    public int insert_Location(LocationEntity locationEntity) {
+        try {
+            return new Location_AsyncTask.InsertLocationAsyncTask(locationEntity_dao).execute(locationEntity).get();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return 0;
     }
     public void update_Location(LocationEntity locationEntity){
         new Location_AsyncTask.UpdateLocationAsyncTask(locationEntity_dao).execute(locationEntity);

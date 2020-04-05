@@ -13,7 +13,8 @@ import java.util.List;
 public interface LocationEntity_Dao {
 
     @Insert
-    void insert(LocationEntity locationEntity);
+    long insert(LocationEntity locationEntity);
+
 
     @Update
     void update(LocationEntity locationEntity);

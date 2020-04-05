@@ -26,8 +26,7 @@ public class LocationViewModel extends AndroidViewModel {
 
     }
     public int insert_LocationEntity(LocationEntity locationEntity){
-        repository.insert_Location(locationEntity);
-        return locationEntity.getId();
+        return repository.insert_Location(locationEntity);
     }
     public void update_LocationEntity(LocationEntity locationEntity){
         repository.update_Location(locationEntity);

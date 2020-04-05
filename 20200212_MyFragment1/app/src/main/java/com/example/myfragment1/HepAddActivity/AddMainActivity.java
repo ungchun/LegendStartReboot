@@ -318,8 +318,9 @@ public class AddMainActivity extends Activity {
         LocationRepository locationRepository = new LocationRepository(getApplication());
         LocationEntity locationEntity = new LocationEntity(title, address, detailAddr, number, comment, latitude, longitude, timestamp);
         Log.d("storeData = ", "insert_Location prev");
-        locationRepository.insert_Location(locationEntity);
-        Log.d("storeData = ", "insert_Location next");
+        int a = locationRepository.insert_Location(locationEntity);
+        Toast.makeText(getApplicationContext(),a + "",Toast.LENGTH_SHORT).show();
+        Log.d("storeData = ", "Insert Location ID" + a);
 
         /*
         LocationDatabase locationDatabase = Room.databaseBuilder(this, LocationDatabase.class, "LocationEntity").allowMainThreadQueries().build();
