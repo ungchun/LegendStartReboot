@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case MotionEvent.ACTION_UP:
                         toasts();
                         Intent intent = new Intent(MainActivity.this, AddMainActivity.class);
-                        startActivityForResult(intent,ADD_MAIN_ACTIVITY_REQUEST_CODE);
+                        startActivityForResult(intent, ADD_MAIN_ACTIVITY_REQUEST_CODE);
                         return true;
                 }
                 return false;
@@ -371,15 +371,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.floatingActionButton:
 //clearSearchBar(ac); //서치바 초기화
-                if(fa != null)
+                if (fa != null)
                     fragmentManager.beginTransaction().hide(fa).commit();
-                if(fragmentLocationListLayout != null)
+                if (fragmentLocationListLayout != null)
                     fragmentManager.beginTransaction().hide(fragmentLocationListLayout).commit();
 
                 selectLocationFlag = true;
                 SetToolbar(); //툴바 세팅
                 sl.SetLinearLayout(getApplicationContext(), relativelayout_sub);
-
 
 
                 //floating icon
@@ -408,6 +407,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /*
+    else if (event.getAction() == MotionEvent.ACTION_DOWN && recyFrag == true) {
+                    Animation animationH = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.translatehide);
+                    test_view.setAnimation(animationH);
+                    test_view.setVisibility(mView.GONE);
+                    Log.d("Search", "2");
+                    recyFrag = false;
+                }
+     */
+
+
     @Override
     public void onBackPressed() {
         // BackPressedForFinish 클래시의 onBackPressed() 함수를 호출한다.
@@ -416,7 +426,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             backPressedForFinish.onBackPressed();
         //서치상태 아닐때만 종료 가능
 
-        if (drawerLayout.isDrawerOpen(GravityCompat.START) && searchFlag == false && recyFrag == false && selectLocationFlag == false && hashTagFilterFlag == false) {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START) && searchFlag == false && recyFrag == false && selectLocationFlag == false && hashTagFilterFlag == false)
+        {
             drawerLayout.closeDrawers();
         } else if (searchFlag == true) {
             getSupportActionBar().show();
@@ -662,7 +673,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == ADD_MAIN_ACTIVITY_REQUEST_CODE && resultCode == ADD_MAIN_ACTIVITY_REPLY_CODE) {
+        if (requestCode == ADD_MAIN_ACTIVITY_REQUEST_CODE && resultCode == ADD_MAIN_ACTIVITY_REPLY_CODE) {
             if (data.getBooleanExtra(AddMainActivity.SET_STORE_FLAG, false)) {
                 if (relativelayout_sub.getVisibility() != View.GONE)
                     relativelayout_sub.setVisibility(View.GONE);
@@ -670,7 +681,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         setFragmentLocationListLayout();
     }
-    public void setFragmentLocationListLayout(){
+
+    public void setFragmentLocationListLayout() {
         if (fragmentLocationListLayout == null) {
             fragmentLocationListLayout = new LocationFragment();
             fragmentManager.beginTransaction().add(R.id.frameLayout, fragmentLocationListLayout).commit();
