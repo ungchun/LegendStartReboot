@@ -178,14 +178,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 recy_title.clear();
                 for(int i = 0; i < directoryEntities.size(); i++){
                     recy_title.add(directoryEntities.get(i).toString());
-                    Log.d("1","sibal"+Integer.toString(directoryEntities.size()));
-//                    Log.d("1",)
                 }
+                Log.d("1","sibal"+Integer.toString(directoryEntities.size()));
             }
         });
 
         // testView
         test_view = findViewById(R.id.hh);
+        test_view.setVisibility(mView.GONE);
 
         //상단바
         searchlinearlayout = findViewById(R.id.linearLayoutSearch);

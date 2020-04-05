@@ -142,7 +142,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 @Override
                 public void onChanged(List<DirectoryEntity> directoryEntities) {
                     Log.d("1","title 확인"+title.size());
-                    Log.d("1","확인 여기요"+directoryEntities.size());
+//                    Log.d("1","확인 여기요"+directoryEntities.size());
                 }
             });
 
