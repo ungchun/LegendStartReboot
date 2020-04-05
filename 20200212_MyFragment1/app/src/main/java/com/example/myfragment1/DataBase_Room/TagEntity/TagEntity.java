@@ -17,41 +17,27 @@ import java.util.List;
 // Foreign key not Recommand for resuorce
 public class TagEntity {
     @PrimaryKey(autoGenerate = true)
-    private int tag_id;
-
-    @ColumnInfo(name = "location_Foreign_id")
-    private int locationId;
-
+    private int id;
     private String tag;
 
-    public TagEntity(int locationId, String tag) {
-        this.locationId = locationId;
+    public TagEntity(String tag) {
         this.tag = tag;
     }
 
-    public void setTag_id(int tag_id) {
-        this.tag_id = tag_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getTag_id() {
-        return tag_id;
+    public int getId() {
+        return id;
     }
 
-    public int getLocationId() {
-        return locationId;
+    public void setTag(String tag){
+        this.tag = tag;
     }
-
     public String getTag() {
         return tag;
     }
-
-    public TagEntity searchByLocationID(int position){
-        if(this.locationId == position)
-            return this;
-        else
-            return null;
-    }
-
 }
 
 

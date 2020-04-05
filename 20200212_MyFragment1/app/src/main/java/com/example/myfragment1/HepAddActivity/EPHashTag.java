@@ -33,8 +33,8 @@ public class EPHashTag extends RelativeLayout {
 
     public static List<String> getHashTagar(){
         //If Collections.Empty_List is more less using resource than empty ArrayList
-        if(HashTagar.isEmpty())
-            return (List<String>) Collections.EMPTY_LIST;
+        //if(HashTagar.isEmpty())
+         //   return (List<String>) Collections.EMPTY_LIST;
 
         return HashTagar;
     }

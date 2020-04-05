@@ -1,5 +1,6 @@
 package com.example.myfragment1.HepAddActivity;
 
+import android.app.Application;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,9 +15,14 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import com.example.myfragment1.DataBase_Room.LocationRoom.LocationDatabase;
+import com.example.myfragment1.DataBase_Room.LocationRoom.LocationEntity;
+import com.example.myfragment1.DataBase_Room.Repository.LocationRepository;
+import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity;
 import com.example.myfragment1.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 //import static com.example.ls_listsave.DataBase.LSSQLContract.TagTable.TABLE_NAME;
 
@@ -63,13 +69,13 @@ public class HashEditText extends RelativeLayout {
                 if (s.length() > 0) {
                     btnClear.setVisibility(RelativeLayout.VISIBLE);
 
-                    SQLiteDatabase db = null;
-                    //LSDBHelper lsdbHelper = new LSDBHelper(mContext);
-                    //db = lsdbHelper.getReadableDatabase();
+                    LocationDatabase db = LocationDatabase.getInstance(mContext.getApplicationContext());
+                    LocationRepository locationRepository = new LocationRepository(mContext.getApplicationContext());
+                    List<TagEntity> list = db.tagEntity_dao().getAllData().getValue();
 
                     String query = searchSql(s.toString());
                     Log.d("Search", query);
-                    list.clear();
+                    /*list.clear();
                     try {
                         Cursor cursor = db.rawQuery(query + ";", null);
                         while (cursor.moveToNext()) {
@@ -77,14 +83,16 @@ public class HashEditText extends RelativeLayout {
                             list.add(result);
                             Log.d("Search", result);
                         }
-                        db.close();
+                        //db.close();
 
                         AutoCompleteTextView autoCompleteTextView = ((HashEditText) findViewById(R.id.Text_Hash)).editText;
                         autoCompleteTextView.setAdapter(new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line, list));
+
+
                     } catch (Exception e) {
                         e.printStackTrace();
-                        db.close();
-                    }
+                        //db.close();
+                    }*/
                 } else {
                     btnClear.setVisibility(RelativeLayout.INVISIBLE);
                 }
@@ -100,17 +108,15 @@ public class HashEditText extends RelativeLayout {
     }
 
     public String searchSql(String searchStr) {
-    /*
-        String sql = "Select * FROM " + TABLE_NAME;
+
+        String sql = "Select * FROM ";
+        /*
         if (TextUtils.isEmpty(searchStr) == false) {
             sql += " WHERE ";
             sql += ChoSearchQuery.makeQuery(searchStr);
         }
-
+        */
         return sql;
-
-     */
-    return "삭제";
     }
 
 

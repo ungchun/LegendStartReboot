@@ -1,6 +1,7 @@
 package com.example.myfragment1.DataBase_Room.LocationTagEntity;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
@@ -15,7 +16,7 @@ public class LocationTag_AsyncTask {
     private LocationTag_Dao locationTag_dao;
     private LiveData<List<LocationTagEntity>> allLocationTagData;
 
-    public LocationTag_AsyncTask(Application application) {
+    public LocationTag_AsyncTask(Context application) {
 //        LocationTag_DataBase locationTag_dataBase = LocationTag_DataBase.getInstance(application);
 //        this.locationTag_dao = locationTag_dataBase.locationTag_dao();
 //        allLocationTagData = locationTag_dao.getAllLocationTagData();
@@ -69,7 +70,5 @@ public class LocationTag_AsyncTask {
         protected List<LocationTagEntity> doInBackground(Integer... integers) {
             return locationTag_dao.getDataByLocationId(integers[0]);
         }
-
     }
-
 }

@@ -17,7 +17,7 @@ import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity;
 import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity_Dao;
 
 // DireectoryEntity 수정
-@Database(entities = {LocationEntity.class, LocationTagEntity.class, TagEntity.class}, version = 1
+@Database(entities = {LocationEntity.class, LocationTagEntity.class, TagEntity.class}, version = 2
 //          get rid of warning
 //        ,exportSchema = false
 )
@@ -39,6 +39,7 @@ public abstract class LocationDatabase extends RoomDatabase {
         }
         return instance;
     }
+
     private static Callback locationcallback = new Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {

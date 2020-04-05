@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView back_allSee;
     View test_view;
 
+    static RecyclerView recy_test_view;
+
     //애니메이션
     Animation animation;
     Animation animationH;
@@ -168,19 +170,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
 //         여기 조져야함
-        DirectoryDatabase db = Room.databaseBuilder(this, DirectoryDatabase.class, "directory_db").build();
-//        db.directoryDao().getAll().observe(this, new Observer<List<DirectoryEntity>>() {
-//            @Override
-//            public void onChanged(List<DirectoryEntity> directoryEntities) {
-//                for(int i = 0; i < directoryEntities.size(); i++){
-////                    recy_title.add(directoryEntities.get(i).toString());
-////                    Log.d("1",)
-//                }
-//            }
-//        });
+        DirectoryDatabase db = DirectoryDatabase.getInstance(getApplicationContext());
+
+        db.directoryDao().getAll().observe(this, new Observer<List<DirectoryEntity>>() {
+            @Override
+            public void onChanged(List<DirectoryEntity> directoryEntities) {
+                recy_title.clear();
+                for(int i = 0; i < directoryEntities.size(); i++){
+                    recy_title.add(directoryEntities.get(i).toString());
+                }
+                Log.d("1","sibal"+Integer.toString(directoryEntities.size()));
+            }
+        });
 
         // testView
         test_view = findViewById(R.id.hh);
+        test_view.setVisibility(mView.GONE);
 
         //상단바
         searchlinearlayout = findViewById(R.id.linearLayoutSearch);
@@ -228,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // spinner 선언
         spinner = findViewById(R.id.spinner);
         // toolbar 초기 Title 선언
-        toolbar.setTitle("여기는 됌?");
+        toolbar.setTitle("조이서 내꺼ㅎㅎ;");
         // **NoActionBar 해주고 이 메서드 호출하면 toolbar를 Activity의 앱바로 사용가능
         setSupportActionBar(toolbar);
 
@@ -254,14 +259,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentManager.beginTransaction().replace(R.id.frameLayout, fa).commit();
 
         recy_title = new ArrayList<>();
-//        recy_title.add("Frist");
-//        recy_title.add("Two");
-//        recy_title.add("Third");
-//        recy_title.add("Four");
-//        recy_title.add("FIve");
 
         // recyclerView
         recyclerView = findViewById(R.id.recyclerView);
+        recy_test_view = findViewById(R.id.recyclerView);
         // recyclerView set ( HORIZONTAL -> 수평 / if) 수직이면 false -> true)
         // 어떤형태로 배치될 아이템 뷰를 만들것인지 결정하는요소 -> LayoutManager -> Linear -> 수직 또는 수평으로 일렬형태로 배치
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -276,6 +277,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 toolbar.setTitle(recy_title.get(pos));
                 Toast.makeText(getApplicationContext(), recy_title.get(pos), Toast.LENGTH_SHORT).show();
+                Animation animationH = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.translatehide);
+                test_view.setAnimation(animationH);
+                test_view.setVisibility(mView.GONE);
             }
         });
 

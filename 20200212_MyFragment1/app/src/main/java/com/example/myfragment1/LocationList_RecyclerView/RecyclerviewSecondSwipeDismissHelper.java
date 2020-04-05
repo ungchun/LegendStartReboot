@@ -45,7 +45,9 @@ public class RecyclerviewSecondSwipeDismissHelper extends ItemTouchHelper.Simple
 
         locationEntity = locationViewModel.delete_LocationEntity(recyclerAdapter.getLocationEntityAt(viewHolder.getAdapterPosition()));
         int locationEntityID = locationEntity.getId();
+
         locationTagEntity = locationViewModel.SearchTagByLocationID_LocationTagEntity(locationEntityID);
+
         if(locationEntity != null){
             tagEntities = locationViewModel.searchTagByLocationID_TagEntity(locationEntityID).toArray(new TagEntity[0]);
             locationViewModel.delete_TagEntity(tagEntities);
