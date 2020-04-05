@@ -300,6 +300,7 @@ public class AddMainActivity extends Activity {
     public void listshowOnButton(View view) {
         finish();
     }
+
     public void storeData(){
         Log.d("tag","in storeDataMethod ");
         String title = Location_Title.getText().toString();
@@ -311,11 +312,14 @@ public class AddMainActivity extends Activity {
         String longitude = null;
         String timestamp = Long.toString(System.currentTimeMillis());
 
+        Log.d("storeData = ", "_hashTag");
         List<String> _hashTag = EPHashTag.getHashTagar();
         ////String location_Title, String location_Addr, String location_DetailAddr, String location_Phone, String location_Memo, String location_Latitude, String location_Longitude, String location_Timestamp
         LocationRepository locationRepository = new LocationRepository(getApplication());
         LocationEntity locationEntity = new LocationEntity(title, address, detailAddr, number, comment, latitude, longitude, timestamp);
+        Log.d("storeData = ", "insert_Location prev");
         locationRepository.insert_Location(locationEntity);
+        Log.d("storeData = ", "insert_Location next");
 
         /*
         LocationDatabase locationDatabase = Room.databaseBuilder(this, LocationDatabase.class, "LocationEntity").allowMainThreadQueries().build();
@@ -328,13 +332,18 @@ public class AddMainActivity extends Activity {
          */
 
         if(!_hashTag.isEmpty()) {
-            int location_id = locationEntity.getId();
+            Log.d("storeData = ", "for prev");
             for (String tag : _hashTag)
-                locationRepository.insert_Tag(new TagEntity(location_id, tag));
+                locationRepository.insert_Tag(new TagEntity(tag));
+            Log.d("storeData = ", "for next");
         }
+
         Intent mainActivityIntent = new Intent(this, MainActivity.class);
+        Log.d("storeData = ", "putExtra prev");
         mainActivityIntent.putExtra(SET_STORE_FLAG, true);
+        Log.d("storeData = ", "putExtra next");
         setResult(MainActivity.ADD_MAIN_ACTIVITY_REPLY_CODE, mainActivityIntent);
+        Log.d("storeData = ", "setResult next");
         finish();
     }
 }

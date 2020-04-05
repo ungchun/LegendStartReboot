@@ -1,6 +1,7 @@
 package com.example.myfragment1.DataBase_Room.Repository;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
@@ -38,7 +39,7 @@ public class LocationRepository {
         return allTags;
     }
 
-    public LocationRepository(Application application) {
+    public LocationRepository(Context application) {
         LocationDatabase locationDatabase = LocationDatabase.getInstance(application);
 
         this.locationEntity_dao = locationDatabase.locationEntity_dao();

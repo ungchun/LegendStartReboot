@@ -24,8 +24,7 @@ public class SelectLocation extends AppCompatActivity {
         } else if (li.getVisibility() == View.VISIBLE) {
             Toast.makeText(context, "검색 바 / 서브 툴바 미출력", Toast.LENGTH_SHORT).show();
             li.setVisibility(View.GONE);
-
-            } //서브 툴바 숨기기
+        } //서브 툴바 숨기기
 //            setSupportActionBar(MainActivity.toolbarMain); //메인 툴바에 권한줌
 //            getActionBar().show(); //메인 툴바 출력
 //            toolbarSub.setTitle("메인툴바 출력");

@@ -48,8 +48,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private final int TYPE_HEADER = 0;
     private final int TYPE_ITEM = 1;
 
-
-
     @Override
     public int getItemViewType(int position) {
         if (position == 0)
@@ -57,7 +55,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         else
             return TYPE_ITEM;
     }
-
 
     //    private String btn = "btn";
     public interface OnItemClickListener {
