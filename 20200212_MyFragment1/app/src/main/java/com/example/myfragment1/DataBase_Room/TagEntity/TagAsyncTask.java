@@ -22,16 +22,15 @@ public class TagAsyncTask {
 //        allTags = tagEntity_dao.getAllData();
         //selectDismissTagEntities = tagEntity_dao.multipleSelectionByForeignKey(position);
     }
-    public static class InsertTagAsyncTask extends AsyncTask<TagEntity, Void, Void> {
+    public static class InsertTagAsyncTask extends AsyncTask<TagEntity, Void, Integer> {
         private TagEntity_Dao tagEntity_dao;
         public InsertTagAsyncTask(TagEntity_Dao tagEntity_dao) {
             this.tagEntity_dao = tagEntity_dao;
         }
 
         @Override
-        protected Void doInBackground(TagEntity... tagEntities) {
-            tagEntity_dao.insert(tagEntities[0]);
-            return null;
+        protected Integer doInBackground(TagEntity... tagEntities) {
+            return (int)tagEntity_dao.insert(tagEntities[0]);
         }
     }
     public void update(TagEntity tagEntity){
@@ -85,5 +84,4 @@ public class TagAsyncTask {
             return ((List<TagEntity>) new SendingArrayList().SendingArrayList(tagEntity_dao.dismissUsingForeignKey(integers[0])));
         }
     }
-
 }

@@ -1,6 +1,7 @@
 package com.example.myfragment1.DataBase_Room.Repository;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
@@ -38,7 +39,7 @@ public class LocationRepository {
         return allTags;
     }
 
-    public LocationRepository(Application application) {
+    public LocationRepository(Context application) {
         LocationDatabase locationDatabase = LocationDatabase.getInstance(application);
 
         this.locationEntity_dao = locationDatabase.locationEntity_dao();
@@ -50,10 +51,15 @@ public class LocationRepository {
         allLocationTagData = locationTag_dao.getAllLocationTagData();
         allTags = tagEntity_dao.getAllData();
         locationTag_asyncTask = new LocationTag_AsyncTask(application);
-
     }
-    public void insert_Location(LocationEntity locationEntity){
-        new Location_AsyncTask.InsertLocationAsyncTask(locationEntity_dao).execute(locationEntity);
+
+    public int insert_Location(LocationEntity locationEntity){
+        try {
+            return new Location_AsyncTask.InsertLocationAsyncTask(locationEntity_dao).execute(locationEntity).get();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return 0;
     }
     public void update_Location(LocationEntity locationEntity){
         new Location_AsyncTask.UpdateLocationAsyncTask(locationEntity_dao).execute(locationEntity);
@@ -62,8 +68,14 @@ public class LocationRepository {
         new Location_AsyncTask.DeleteLocationAsyncTask(locationEntity_dao).execute(locationEntity);
         return locationEntity;
     }
-    public void insert_Tag(TagEntity... tagEntities){
-        new TagAsyncTask.InsertTagAsyncTask(tagEntity_dao).execute(tagEntities);
+    public int insert_Tag(TagEntity... tagEntities){
+        try{
+            return new TagAsyncTask.InsertTagAsyncTask(tagEntity_dao).execute(tagEntities).get();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return -1;
     }
     public TagEntity[] delete_Tag(TagEntity... tagEntities){
         new TagAsyncTask.DeleteTagAsyncTask(tagEntity_dao).execute(tagEntities);
@@ -86,6 +98,7 @@ public class LocationRepository {
         final List<TagEntity> result = (List<TagEntity>) new TagAsyncTask.SearchAboutLocationId(tagEntity_dao).execute(position);
         return result;
     }
+
     public void insert_directory (DirectoryEntity directoryEntity){
         new Directory_AsyncTask.InsertDirectoryAsyncTask(directoryDao).execute();
     }
@@ -97,5 +110,4 @@ public class LocationRepository {
     public LiveData<List<LocationEntity>> getAllLocations(){
         return allLocations;
     }
-
 }

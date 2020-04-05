@@ -32,6 +32,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.myfragment1.DataBase_Room.LocationRoom.LocationDatabase;
 import com.example.myfragment1.DataBase_Room.LocationRoom.LocationEntity;
+import com.example.myfragment1.DataBase_Room.LocationTagEntity.LocationTagEntity;
 import com.example.myfragment1.DataBase_Room.Repository.LocationRepository;
 import com.example.myfragment1.LocationList_RecyclerView.LocationViewModel;
 import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity;
@@ -300,8 +301,8 @@ public class AddMainActivity extends Activity {
     public void listshowOnButton(View view) {
         finish();
     }
+
     public void storeData(){
-        Log.d("tag","in storeDataMethod ");
         String title = Location_Title.getText().toString();
         String address = Location_Address.getText().toString();
         String detailAddr = Location_DetailAddress.getText().toString();
@@ -313,9 +314,11 @@ public class AddMainActivity extends Activity {
 
         List<String> _hashTag = EPHashTag.getHashTagar();
         ////String location_Title, String location_Addr, String location_DetailAddr, String location_Phone, String location_Memo, String location_Latitude, String location_Longitude, String location_Timestamp
+
         LocationRepository locationRepository = new LocationRepository(getApplication());
         LocationEntity locationEntity = new LocationEntity(title, address, detailAddr, number, comment, latitude, longitude, timestamp);
-        locationRepository.insert_Location(locationEntity);
+        int location_id = locationRepository.insert_Location(locationEntity);
+
 
         /*
         LocationDatabase locationDatabase = Room.databaseBuilder(this, LocationDatabase.class, "LocationEntity").allowMainThreadQueries().build();
@@ -328,10 +331,12 @@ public class AddMainActivity extends Activity {
          */
 
         if(!_hashTag.isEmpty()) {
-            int location_id = locationEntity.getId();
-            for (String tag : _hashTag)
-                locationRepository.insert_Tag(new TagEntity(location_id, tag));
+            for (String tag : _hashTag) {
+                int tag_id = locationRepository.insert_Tag(new TagEntity(tag));
+                locationRepository.insert_LocationTag(new LocationTagEntity(location_id,tag_id));
+            }
         }
+
         Intent mainActivityIntent = new Intent(this, MainActivity.class);
         mainActivityIntent.putExtra(SET_STORE_FLAG, true);
         setResult(MainActivity.ADD_MAIN_ACTIVITY_REPLY_CODE, mainActivityIntent);
