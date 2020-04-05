@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -13,8 +14,8 @@ import java.util.List;
 
 @Dao
 public interface TagEntity_Dao {
-    @Insert
-    void insert(TagEntity... tagEntities);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long insert(TagEntity tagEntities);
     @Update
     void update(TagEntity tagEntity);
     @Delete

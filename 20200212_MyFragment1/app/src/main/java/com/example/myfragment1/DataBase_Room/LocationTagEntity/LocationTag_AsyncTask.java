@@ -70,7 +70,5 @@ public class LocationTag_AsyncTask {
         protected List<LocationTagEntity> doInBackground(Integer... integers) {
             return locationTag_dao.getDataByLocationId(integers[0]);
         }
-
     }
-
 }

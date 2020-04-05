@@ -25,8 +25,8 @@ public class Location_AsyncTask {
         }
         @Override
         protected Integer doInBackground(LocationEntity... locationEntities) {
-            long a = locationEntity_dao.insert(locationEntities[0]);
-            return (int)a;
+
+            return (int)locationEntity_dao.insert(locationEntities[0]);
         }
     }
     public static class UpdateLocationAsyncTask extends AsyncTask<LocationEntity,Void, Void> {
@@ -62,5 +62,4 @@ public class Location_AsyncTask {
             return null;
         }
     }
-
 }
