@@ -169,8 +169,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
-                        IntentAddLocation();
-                        setFragmentMapLayout();
+                        IntentAddLocation();      //추후 수정해야함
                         toasts("맵 - 인텐트 - 다시 맵 나와야함");
                         return true;
                 }
@@ -424,7 +423,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawers();
-        } else if (searchFlag == false && recyFrag == false && selectLocationFlag == false && hashTagFilterFlag == false) {
+        }
+        else if (searchFlag == false && recyFrag == false && selectLocationFlag == false && hashTagFilterFlag == false) {
             backPressedForFinish.onBackPressed();
             //서치상태 아닐때만 종료 가능
         }
@@ -457,8 +457,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 setFloatingItem(hashTagFilterFlag);
             }
         } //드로워블도 없고 종료도 아니면 실행
-
-        hideRecyclerView(); //만약 떠있으면 디렉토리 종료 후 recy플래그 false
     }
 
     public void hideAddLocation(){ //장소 숨기는 함수
