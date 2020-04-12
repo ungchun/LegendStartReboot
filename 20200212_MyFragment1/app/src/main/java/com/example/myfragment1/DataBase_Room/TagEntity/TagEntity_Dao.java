@@ -6,7 +6,9 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.RawQuery;
 import androidx.room.Update;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 import com.example.myfragment1.LocationList_RecyclerView.SendingArrayList;
 
@@ -32,4 +34,7 @@ public interface TagEntity_Dao {
 
     @Query("SELECT * FROM Tag_Database WHERE id = :location_id")
     List<TagEntity> multipleSelectionByForeignKey(int location_id);
+
+    @RawQuery
+    List<String> searchTag(SupportSQLiteQuery query);
 }

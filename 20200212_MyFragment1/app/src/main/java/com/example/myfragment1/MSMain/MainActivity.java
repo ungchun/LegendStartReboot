@@ -171,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case MotionEvent.ACTION_UP:
                         IntentAddLocation();      //추후 수정해야함
                         toasts("맵 - 인텐트 - 다시 맵 나와야함");
+
                         return true;
                 }
                 return false;
@@ -679,6 +680,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportActionBar().show(); //만약 액션바 안보이면 보이게
         }
     }
+
 
     public void toasts(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
