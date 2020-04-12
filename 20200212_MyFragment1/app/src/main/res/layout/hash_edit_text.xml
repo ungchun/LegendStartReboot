@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <AutoCompleteTextView
+    <com.example.myfragment1.HepAddActivity.AutoFirstTextView
         android:id="@+id/clearable_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

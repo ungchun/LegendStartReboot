@@ -3,6 +3,7 @@ package com.example.myfragment1.DataBase_Room.Repository;
 import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -21,6 +22,7 @@ import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity;
 import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity_Dao;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static com.example.myfragment1.DataBase_Room.LocationTagEntity.LocationTag_AsyncTask.*;
 
@@ -94,6 +96,7 @@ public class LocationRepository {
     public LocationTagEntity searchByLocationID_LocationTag(int locationID){
         return ((List<LocationTagEntity>) new SearchForTagIDByLocationID(locationTag_dao).execute(locationID)).get(0);
     }
+
     public List<TagEntity> searchAboutLocationId(int position){
         final List<TagEntity> result = (List<TagEntity>) new TagAsyncTask.SearchAboutLocationId(tagEntity_dao).execute(position);
         return result;
@@ -107,7 +110,18 @@ public class LocationRepository {
     public void deleteAllDates(){
         new Location_AsyncTask.DeleteAllLocationAsyncTask(locationEntity_dao).execute();
     }
+
     public LiveData<List<LocationEntity>> getAllLocations(){
         return allLocations;
+    }
+
+    public List<String> searchTag(String search) {
+        try {
+            final List<String> result = new TagAsyncTask.searchTag(tagEntity_dao).execute(search).get();
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

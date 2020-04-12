@@ -160,7 +160,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
-                        toasts();
                         Intent intent = new Intent(MainActivity.this, AddMainActivity.class);
                         startActivityForResult(intent, ADD_MAIN_ACTIVITY_REQUEST_CODE);
                         return true;
@@ -668,10 +667,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             getSupportActionBar().show(); //만약 액션바 안보이면 보이게
         }
-    }
-
-    public void toasts() {
-        Toast.makeText(this, "시발되라고개새끼야", Toast.LENGTH_SHORT).show();
     }
 
     @Override
