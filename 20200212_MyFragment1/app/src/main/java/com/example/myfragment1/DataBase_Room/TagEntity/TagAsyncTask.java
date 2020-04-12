@@ -2,12 +2,11 @@ package com.example.myfragment1.DataBase_Room.TagEntity;
 
 import android.app.Application;
 import android.os.AsyncTask;
-
 import androidx.lifecycle.LiveData;
+import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.example.myfragment1.LocationList_RecyclerView.SendingArrayList;
 
-import java.util.Collections;
 import java.util.List;
 
 public class TagAsyncTask {
@@ -82,6 +81,19 @@ public class TagAsyncTask {
         @Override
         protected List<TagEntity> doInBackground(Integer... integers) {
             return ((List<TagEntity>) new SendingArrayList().SendingArrayList(tagEntity_dao.dismissUsingForeignKey(integers[0])));
+        }
+    }
+
+    public static class searchTag extends AsyncTask<String, Void, List<String>>{
+        private TagEntity_Dao tagEntity_dao;
+        public searchTag(TagEntity_Dao tagEntity_dao) {
+            this.tagEntity_dao = tagEntity_dao;
+        }
+
+        @Override
+        protected List<String> doInBackground(String... strings) {
+            SimpleSQLiteQuery query = new SimpleSQLiteQuery(strings[0]);
+            return tagEntity_dao.searchTag(query);
         }
     }
 }
