@@ -1,6 +1,7 @@
 package com.example.myfragment1.DataBase_Room.DirectoryRoom;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,7 @@ public abstract class DirectoryDatabase extends RoomDatabase {
         }
         return instance;
     }
+
     private static Callback locationcallback = new Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
