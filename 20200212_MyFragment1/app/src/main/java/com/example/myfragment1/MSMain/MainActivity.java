@@ -41,6 +41,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import com.example.myfragment1.AllSee.AllSeeActivity;
 import com.example.myfragment1.DataBase_Room.DirectoryRoom.DirectoryDatabase;
 import com.example.myfragment1.DataBase_Room.DirectoryRoom.DirectoryEntity;
 import com.example.myfragment1.HepAddActivity.AddMainActivity;
@@ -260,6 +261,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // 현재 Drawerlayout 상태와 ActionBarDrawerToggle 의 상태를 sync
         toggle.syncState();
 
+
         // 어플키면 먼저 Map을 보여주기위함
         // MainActivity에 MapFragment(MainFragment)를 올림
         fragmentManager = getSupportFragmentManager();
@@ -424,6 +426,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawers();
+
+        } else if (searchFlag == true) {
+            getSupportActionBar().show();
+            searchFlag = false;
+
+            setBottomBar(searchFlag);
+            setSearchBar(searchFlag);
+            setFloatingItem(searchFlag);
         }
         else if (searchFlag == false && recyFrag == false && selectLocationFlag == false && hashTagFilterFlag == false) {
             backPressedForFinish.onBackPressed();

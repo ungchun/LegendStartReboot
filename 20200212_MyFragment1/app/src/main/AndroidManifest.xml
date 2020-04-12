@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MSMain.AllSeeActivity"/>
+        <activity android:name=".AllSee.AllSeeActivity"/>
         <activity android:name=".MSMain.excelActivity"></activity>
         <activity android:name=".MSMain.todoActivity" />
         <activity android:name=".MSMain.settingActivity" />
