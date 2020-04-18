@@ -21,6 +21,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +38,7 @@ import com.example.myfragment1.DataBase_Room.LocationTagEntity.LocationTagEntity
 import com.example.myfragment1.DataBase_Room.Repository.LocationRepository;
 import com.example.myfragment1.LocationList_RecyclerView.LocationViewModel;
 import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity;
+import com.example.myfragment1.MSMain.GlobalFlag;
 import com.example.myfragment1.MSMain.MainActivity;
 import com.example.myfragment1.R;
 
@@ -68,6 +71,15 @@ public class AddMainActivity extends Activity {
     ViewPager viewPager; // 이미지
 
     private LocationViewModel locationViewModel;
+
+    MainActivity mainActivity; //메인액티비티 객체 생성
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,11 +167,9 @@ public class AddMainActivity extends Activity {
             HashText.setText("");
             EPHashTag.getHashTagar().add(Hash);
 
-
             // 해시태그를 추가할 때 마다 스크롤 자동 맞춤
             View targetView = findViewById(R.id.flowlayout);
             targetView.getParent().requestChildFocus(targetView, targetView);
-
         }
     }
 
@@ -329,6 +339,7 @@ public class AddMainActivity extends Activity {
         Intent mainActivityIntent = new Intent(this, MainActivity.class);
         mainActivityIntent.putExtra(SET_STORE_FLAG, true);
         setResult(MainActivity.ADD_MAIN_ACTIVITY_REPLY_CODE, mainActivityIntent);
+        Log.d("test", "값넘어옴");
         finish();
     }
 }
