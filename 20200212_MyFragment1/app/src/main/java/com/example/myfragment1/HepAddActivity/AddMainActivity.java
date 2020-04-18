@@ -50,15 +50,6 @@ import static android.content.ContentValues.TAG;
 
 public class AddMainActivity extends Activity {
     private static final int Main_Activity_Request_Code = 100;
-    public static final String EXTRA_TITLE = "com.example.myfragment1.HepAddActivity.EXTRA_TITLE";
-    public static final String EXTRA_Addr = "com.example.myfragment1.HepAddActivity.EXTRA_Addr";
-    public static final String EXTRA_DetailAddr = "com.example.myfragment1.HepAddActivity.EXTRA_DetailAddr";
-    public static final String EXTRA_Number = "com.example.myfragment1.HepAddActivity.EXTRA_Number";
-    public static final String EXTRA_Comment = "com.example.myfragment1.HepAddActivity.EXTRA_Comment";
-    public static final String EXTRA_Latitude = "com.example.myfragment1.HepAddActivity.EXTRA_Latitude";
-    public static final String EXTRA_Longitude = "com.example.myfragment1.HepAddActivity.EXTRA_Longitude";
-    public static final String EXTRA_Timestamp = "com.example.myfragment1.HepAddActivity.EXTRA_Timestamp";
-    public static final String EXTRA_HASHTAG = "com.example.myfragment1.HepAddActivity.EXTRA_HASHTAG";
 
     public static final String SET_STORE_FLAG = "com.example.myfragment1.HepAddActivity.AddMainActivity.SET_STORE_FLAG";
 
@@ -69,17 +60,10 @@ public class AddMainActivity extends Activity {
     EditText Location_Comment; // 메모
 
     ViewPager viewPager; // 이미지
-
+    
     private LocationViewModel locationViewModel;
 
     MainActivity mainActivity; //메인액티비티 객체 생성
-
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -283,15 +267,14 @@ public class AddMainActivity extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {
                     // 갤러리
-                    if (ActivityCompat.checkSelfPermission(AddMainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) { // 권한 요청
+                    /*if (ActivityCompat.checkSelfPermission(AddMainActivity.this.getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) { // 권한 요청
                         ActivityCompat.requestPermissions(AddMainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
                         return;
-                    }
+                    }*/
                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                     intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                     intent.setType("image/*");
                     startActivityForResult(intent, PICK_IMAGE);
-
                 } else {
                     // 카메라
                     try {
@@ -321,9 +304,7 @@ public class AddMainActivity extends Activity {
         String latitude = null;
         String longitude = null;
         String timestamp = Long.toString(System.currentTimeMillis());
-
         List<String> _hashTag = EPHashTag.getHashTagar();
-        ////String location_Title, String location_Addr, String location_DetailAddr, String location_Phone, String location_Memo, String location_Latitude, String location_Longitude, String location_Timestamp
 
         LocationRepository locationRepository = new LocationRepository(getApplication());
         LocationEntity locationEntity = new LocationEntity(title, address, detailAddr, number, comment, latitude, longitude, timestamp);
