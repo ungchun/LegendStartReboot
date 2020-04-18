@@ -190,6 +190,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     recy_title.add(directoryEntities.get(i).toString());
                 }
                 Log.d("1", "sibal" + Integer.toString(directoryEntities.size()));
+                // 전체보기 -> 삭제하고나서 뒤로올때 recyclerview item refresh
+                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
             }
         });
 

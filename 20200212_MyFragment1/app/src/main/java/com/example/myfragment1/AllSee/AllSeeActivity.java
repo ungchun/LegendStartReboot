@@ -5,6 +5,7 @@ import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -40,7 +41,10 @@ public class AllSeeActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        final AllSeeAdapter adapter = new AllSeeAdapter(this);
+        // 이름 변경할 때 쓰이는 layout -> adapter 에서는 getLayoutInflater 가 안돼서 여서해서 보내줌
+        View view = getLayoutInflater().inflate(R.layout.allsee_update_dashboard, null);
+
+        final AllSeeAdapter adapter = new AllSeeAdapter(this,view);
         recyclerView.setAdapter(adapter);
 
         directoryViewModel = ViewModelProviders.of(this).get(DirectoryViewModel.class);

@@ -4,5 +4,9 @@
         android:id="@+id/menu1"
         android:title="삭제"
         />
+    <item
+        android:id="@+id/menu2"
+        android:title="이름 바꾸기"
+        />
 
 </menu>
