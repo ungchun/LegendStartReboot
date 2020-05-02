@@ -2,6 +2,7 @@ package com.example.myfragment1.DataBase_Room.Repository;
 
 import android.app.Application;
 import android.content.Context;
+import android.provider.ContactsContract;
 
 import androidx.lifecycle.LiveData;
 
@@ -25,8 +26,17 @@ public class DirectoryRepository {
         this.directoryDao = directoryDatabase.directoryDao();
         this.getAllDirectory = directoryDao.getAll();
     }
+
     public void insert_Directory(DirectoryEntity directoryEntity){
         new Directory_AsyncTask.InsertDirectoryAsyncTask(directoryDao).execute(directoryEntity);
+    }
+
+    public void delete_Directory(DirectoryEntity directoryEntity){
+        new Directory_AsyncTask.DeleteDirectoryAsyncTask(directoryDao).execute(directoryEntity);
+    }
+
+    public void update_Directory(DirectoryEntity directoryEntity){
+        new Directory_AsyncTask.UpdateDirectoryAsyncTask(directoryDao).execute(directoryEntity);
     }
 
     public LiveData<List<DirectoryEntity>> getAllDirectory(){
