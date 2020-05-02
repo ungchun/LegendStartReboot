@@ -54,7 +54,6 @@ import java.util.List;
 
 import maes.tech.intentanim.CustomIntent;
 
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     // 기본적으로 쓰이는 것들 선언
     public static final int ADD_MAIN_ACTIVITY_REQUEST_CODE = 1000;
@@ -118,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private List<String> list;
 
     //하단 바
-    LinearLayout bottomBar;
+    public LinearLayout bottomBar;
 
     //해시태그
     public static LinearLayout hastagView;
@@ -144,6 +143,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //장소 추가 인탠트 플래그
     boolean intentAddLocationFlag = false;
+
+    public static Context mainContext; //AddMainActivity 에 넘겨주기 위해 컨텍스트 생성
+
     // Activity가 시작될 때 호출되는 함수 -> MenuItem 생성과 초기화 진행
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -156,6 +158,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(MainActivity.this, AddMainActivity.class);
         startActivityForResult(intent, ADD_MAIN_ACTIVITY_REQUEST_CODE);
         intentAddLocationFlag = true;
+        GlobalFlag.getInstance().setIntentAddLocationFlag(); //인텐트하면 값 바꿔줌
+        Log.d("intentAddLocationFlag",  " " + GlobalFlag.getInstance().getIntentAddLocationFlag());
     }
 
     @Override
@@ -168,6 +172,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mainContext = this;
+
         recy_con_layout = findViewById(R.id.recy_con_layout);
 
         relativelayout_sub = findViewById(R.id.relativeLayout_s);
@@ -178,8 +185,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
                         IntentAddLocation();      //추후 수정해야함
-                        toasts("맵 - 인텐트 - 다시 맵 나와야함");
 
+                        toasts(MainActivity.this,"맵 - 인텐트 - 다시 맵 나와야함");
+                        if(fragmentFlag == true)
+                            hideAddLocation(); //맵프레그먼트에서 넘어왔으면 추가 창 숨기기
                         return true;
                 }
                 return false;
@@ -380,8 +389,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.btnLocationList:
                 fragmentFlag = false;
                 setFragmentLocationListLayout();
-
-
                 break;
             case R.id.btnFilterSelect:
                 msHashTagCheckBoxManager.AddClickHashTag(this);
@@ -402,18 +409,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     IntentAddLocation();
                 }
                 //floating icon
-                setBottomBar(selectLocationFlag);
+                setBottomBar(bottomBar, selectLocationFlag);
                 setFloatingItem(selectLocationFlag);
 
                 //만약 리스트에서 누른거면 바로 인텐트
-
-
                 break;
             default:
                 break;
         }
     }
-
     // fragment 상에서 다른 fragment로 이동
     //프래그먼트와 프래그먼트끼리 직접접근을하지않는다. 프래그먼트와 엑티비티가 접근함
     public void onFragmentChange(int index) {
@@ -423,17 +427,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment2).commit();
         }
     }
-
-    /*
-    else if (event.getAction() == MotionEvent.ACTION_DOWN && recyFrag == true) {
-                    Animation animationH = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.translatehide);
-                    test_view.setAnimation(animationH);
-                    test_view.setVisibility(mView.GONE);
-                    Log.d("Search", "2");
-                    recyFrag = false;
-                }
-     */
-
 
     @Override
     public void onBackPressed() {
@@ -446,7 +439,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportActionBar().show();
             searchFlag = false;
 
-            setBottomBar(searchFlag);
+            setBottomBar(bottomBar, searchFlag);
             setSearchBar(searchFlag);
             setFloatingItem(searchFlag);
         }
@@ -456,7 +449,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else { //드로워블도 없고 종료도 아니면 실행
             if (intentAddLocationFlag == true && fragmentFlag == true){ // 인텐트 상태이면서 맵에서 넘어왔을 경우
-                setFragmentMapLayout(); //맵 띄우기
+                //setFragmentMapLayout(); //맵 띄우기
                 intentAddLocationFlag = false; //인텐트 플래그 트루면 폴스로 바꿔줌
             }
             else if (intentAddLocationFlag == true && fragmentFlag == false) { //인텐트 상태이면서 맵에서 넘어왔을 경우
@@ -467,8 +460,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportActionBar().show();
                 searchFlag = false;
                 //하단 바 및 아이콘 다시 원상복구시킴
-                setBottomBar(searchFlag);
                 setSearchBar(searchFlag);
+                setBottomBar(bottomBar, searchFlag);
                 setFloatingItem(searchFlag);
             }
             else if(recyFrag == true){ //스피너 떠있으면 꺼준다.
@@ -489,10 +482,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         selectLocationFlag = false;
         getSupportActionBar().show();
         sl.SetLinearLayout(getApplicationContext(), relativelayout_sub);
-        setBottomBar(selectLocationFlag);
+        setBottomBar(bottomBar, selectLocationFlag);
         setFloatingItem(selectLocationFlag);
     }
-
 
     public void showRecyclerView() { //리사이클 플래그가 false 이면 - 리사이클러 뷰가 안보이면 실행해준다. true 로 바꾼다.
         if (recyFrag == false) { //호출했을 때 리사이클 없을 경우에만 실행. 떠있을 때 재실행 방지
@@ -560,8 +552,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_search: {//상단 검색 버튼 클릭 시
-
-                hideRecyclerView(); //일단 디렉토리 열려있으면 삭제
+                if(recyFrag == true){ // 만약 리사이클뷰 열려있으면 닫아준다.
+                    setSpinner(); //이걸로 제어
+                    hideRecyclerView(); //일단 디렉토리 열려있으면 삭제
+                }//임시
 
                 Toast.makeText(getApplicationContext(), "검색할 장소를 입력하세요.", Toast.LENGTH_LONG).show();
 
@@ -580,7 +574,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 //                    출처: https://kkangsnote.tistory.com/35 [깡샘의 토마토]
 
-                    setBottomBar(searchFlag);
+                    setBottomBar(bottomBar, searchFlag);
                     setSearchBar(searchFlag);
                     setFloatingItem(searchFlag);
                 }
@@ -608,7 +602,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             floatingButton.show();
     }
 
-
     public void setSearchBar(boolean searchFlag) { //searchFlag 에 맞게 상단 검색 바 출력
         if (searchFlag == true)
             searchlinearlayout.setVisibility(View.VISIBLE);
@@ -616,7 +609,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             searchlinearlayout.setVisibility(View.GONE);
     }
 
-    public void setBottomBar(boolean Flag) { //searchFlag 에 맞게 하단 바 가리기
+    public void setBottomBar(LinearLayout bottomBar, boolean Flag) { //searchFlag 에 맞게 하단 바 가리기
         if (Flag == true)
             bottomBar.setVisibility(View.GONE);
         else
@@ -706,17 +699,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
-    public void toasts(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    public void toasts(Context context, String text) {
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_MAIN_ACTIVITY_REQUEST_CODE && resultCode == ADD_MAIN_ACTIVITY_REPLY_CODE) {
+        if (requestCode == ADD_MAIN_ACTIVITY_REQUEST_CODE && resultCode == ADD_MAIN_ACTIVITY_REPLY_CODE) { //add 메인이 꺼졌다
+            Log.d("test", "onactivity");
             if (data.getBooleanExtra(AddMainActivity.SET_STORE_FLAG, false)) {
-                sl.SetLinearLayout(getApplicationContext(), relativelayout_sub);
+             //   sl.SetLinearLayout(getApplicationContext(), relativelayout_sub);
+                setFragmentLocationListLayout();
             }
         }
         // 전체보기에서 리스트 클릭하면 AllSeeActivity 에서 MainActivity 로 클릭한 pos 값이 넘어옴
