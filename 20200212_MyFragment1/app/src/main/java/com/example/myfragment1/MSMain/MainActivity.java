@@ -426,7 +426,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportActionBar().show();
             searchFlag = false;
 
-            setBottomBar(searchFlag);
+            setBottomBar(bottomBar, searchFlag);
             setSearchBar(searchFlag);
             setFloatingItem(searchFlag);
         }
