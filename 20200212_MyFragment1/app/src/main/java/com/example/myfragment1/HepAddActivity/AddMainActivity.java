@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,12 +13,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -218,7 +223,6 @@ public class AddMainActivity extends Activity {
                 bitmapList.add(b);
             }
             viewPager.setAdapter(new ViewPagerAdapter(this, bitmapList));
-
         }
         // 카메라
         else if (requestCode == CAPTURE_IMAGE && resultCode == RESULT_OK && data.hasExtra("data")) {
@@ -230,6 +234,46 @@ public class AddMainActivity extends Activity {
                 viewPager.setAdapter(new ViewPagerAdapter(getApplicationContext(), bitmapArrayList));
             }
         }
+    }
+
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
+
+    public Bitmap readImageWithSampling(String imagePath, int targetWidth, int targetHeight) {
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(imagePath, bmOptions);
+
+        int photoWidth  = bmOptions.outWidth;
+        int photoHeight = bmOptions.outHeight;
+
+        if (targetHeight <= 0) {
+            targetHeight = (targetWidth * photoHeight) / photoWidth;
+        }
+
+        // Determine how much to scale down the image
+        int scaleFactor = 1;
+        if (photoWidth > targetWidth) {
+            scaleFactor = Math.min(photoWidth / targetWidth, photoHeight / targetHeight);
+        }
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+
+        return BitmapFactory.decodeFile(imagePath, bmOptions);
     }
 
     // 화면에 맞게 이미지 크기 조절

@@ -14,20 +14,22 @@ import com.example.myfragment1.R;
 public class FullImage extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("Activity@@", "onCreate");
         super.onCreate(savedInstanceState);
 
-        Log.d("Activity@@", "onCreate1");
         setContentView(R.layout.full_image);
 
-        ImageView icon = findViewById(R.id.Image_full);
+        ImageView imageView = findViewById(R.id.Image_full);
 
-        Log.d("Activity@@", "onCreate2");
         Intent intent = getIntent();
-        Bitmap bitmap = StringToBitmap(intent.getExtras().getString("imageUri"));
 
-        Log.d("Activity@@", "onCreate3");
-        icon.setImageBitmap(bitmap);
+        if(getIntent().hasExtra("byteArray")) {
+            Bitmap b = BitmapFactory.decodeByteArray(getIntent().getByteArrayExtra("byteArray"),0, getIntent().getByteArrayExtra("byteArray").length);
+            imageView.setImageBitmap(b);
+        }
+
+        //Bitmap bitmap = StringToBitmap(intent.getExtras().getString("imageUri"));
+
+        //imageView.setImageBitmap(bitmap);
     }
 
     public static Bitmap StringToBitmap(String encodedString) {

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.myfragment1">
 
@@ -16,6 +17,7 @@
         <activity android:name=".MSMain.homeActivity" />
         <activity android:name=".LocationList_RecyclerView.LocationList" />
         <activity android:name=".HepAddActivity.AddMainActivity"/>
+        <activity android:name=".HepAddActivity.FullImage"/>
         <activity android:name=".MSMain.MainActivity"
             android:windowSoftInputMode="adjustPan">
             <!--출처: https://duzi077.tistory.com/283 [키패드 눌러도 화면 고정]-->
