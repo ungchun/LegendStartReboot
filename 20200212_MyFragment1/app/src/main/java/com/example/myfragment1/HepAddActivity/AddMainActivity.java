@@ -257,15 +257,21 @@ public class AddMainActivity extends Activity {
                     //구글 갤러리 접근
                     // intent.setType("image/*");
                     startActivityForResult(intent, PICK_IMAGE);*/
-
+/*
                     Intent intent = new Intent(Intent.ACTION_PICK);
-                    intent.setType("image/*");
+                    //intent.setType("image/*");
                     intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
                     intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                    //intent.setAction(Intent.ACTION_GET_CONTENT);
-                    //intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(intent,PICK_IMAGE);
+*/
+                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                    //사진을 여러개 선택할수 있도록 한다
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    intent.setType("image/*");
+                    startActivityForResult(Intent.createChooser(intent, "Select Picture"),  PICK_IMAGE);
+
                 } else {
                     // 카메라
                     try {
