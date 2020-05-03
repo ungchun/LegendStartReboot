@@ -60,7 +60,7 @@ public class AddMainActivity extends Activity {
     EditText Location_Comment; // 메모
 
     ViewPager viewPager; // 이미지
-    
+
     private LocationViewModel locationViewModel;
 
     MainActivity mainActivity; //메인액티비티 객체 생성
@@ -74,7 +74,6 @@ public class AddMainActivity extends Activity {
         setTitle("ADD Location");
         init();
         PermissionCheck();
-
     }
 
     public void PermissionCheck() {
