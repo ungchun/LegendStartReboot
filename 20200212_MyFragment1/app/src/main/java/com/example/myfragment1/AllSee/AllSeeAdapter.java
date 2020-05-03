@@ -144,7 +144,6 @@ public class AllSeeAdapter extends RecyclerView.Adapter<AllSeeAdapter.AllSeeHold
             // menu ... 버튼
             btnViewOption = itemView.findViewById(R.id.allsee_ViewOptions);
 
-            //2
 //            // 전체보기 리스트 클릭 여기도 오류
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

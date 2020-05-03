@@ -61,8 +61,6 @@ public class AllSeeActivity extends AppCompatActivity {
             }
         });
 
-
-        //1
 //        // 이동하는게 너무 이상함
         adapter.setOnItemClickListener(new Adapter.OnItemClickListener() {
             @Override
@@ -75,18 +73,18 @@ public class AllSeeActivity extends AppCompatActivity {
 //                CustomIntent.customType(getApplicationContext(), "right-to-left");
             }
         });
-    }
+}
 
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            switch (item.getItemId()) {
-                case android.R.id.home: { //toolbar의 back키 눌렀을 때 동작
-                    finish();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: { //toolbar의 back키 눌렀을 때 동작
+                finish();
 //                drawerLayout.isDrawerOpen(GravityCompat.START);
-                    CustomIntent.customType(this, "right-to-left");
-                    return true;
-                }
+                CustomIntent.customType(this, "right-to-left");
+                return true;
             }
-            return super.onOptionsItemSelected(item);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
