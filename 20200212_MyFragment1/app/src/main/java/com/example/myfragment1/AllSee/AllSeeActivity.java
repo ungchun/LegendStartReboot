@@ -61,6 +61,9 @@ public class AllSeeActivity extends AppCompatActivity {
             }
         });
 
+
+        //1
+//        // 이동하는게 너무 이상함
         adapter.setOnItemClickListener(new Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {

@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // 기본적으로 쓰이는 것들 선언
     public static final int ADD_MAIN_ACTIVITY_REQUEST_CODE = 1000;
     public static final int ADD_MAIN_ACTIVITY_REPLY_CODE = 2000;
-    public static final int ALLSEE_ACTIVITY_REQUEST_CODE = 1000;
-    public static final int ALLSEE_ACTIVITY_REPLY_CODE = 2000;
+    public static final int ALLSEE_ACTIVITY_REQUEST_CODE = 3000;
+    public static final int ALLSEE_ACTIVITY_REPLY_CODE = 4000;
     DrawerLayout drawerLayout;
     Boolean drawerFlag = false;
     NavigationView navigationView;
@@ -333,6 +333,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(mView.getContext(), AllSeeActivity.class);
+//                        startActivity(intent);
                         startActivityForResult(intent,ALLSEE_ACTIVITY_REQUEST_CODE);
                         CustomIntent.customType(mView.getContext(), "left-to-right");
                         Toast.makeText(getApplicationContext(), "전체보기클릭", Toast.LENGTH_SHORT).show();
@@ -367,7 +368,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             test_view.setVisibility(mView.GONE);
             Log.d("Search", "2");
             recyFrag = false;
-          }
+        }
         else if(recyFrag == false){
             Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.translate);
             test_view.setAnimation(animation);
@@ -709,11 +710,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (requestCode == ADD_MAIN_ACTIVITY_REQUEST_CODE && resultCode == ADD_MAIN_ACTIVITY_REPLY_CODE) { //add 메인이 꺼졌다
             Log.d("test", "onactivity");
             if (data.getBooleanExtra(AddMainActivity.SET_STORE_FLAG, false)) {
-             //   sl.SetLinearLayout(getApplicationContext(), relativelayout_sub);
+                //   sl.SetLinearLayout(getApplicationContext(), relativelayout_sub);
                 setFragmentLocationListLayout();
             }
         }
-        // 전체보기에서 리스트 클릭하면 AllSeeActivity 에서 MainActivity 로 클릭한 pos 값이 넘어옴
+        //3
+//         전체보기에서 리스트 클릭하면 AllSeeActivity 에서 MainActivity 로 클릭한 pos 값이 넘어옴
         if(requestCode == ALLSEE_ACTIVITY_REQUEST_CODE && resultCode == ALLSEE_ACTIVITY_REPLY_CODE){
             Log.d("1","오긴옴?    "+data.getStringExtra("result_pos"));
             int pos = Integer.parseInt(data.getStringExtra("result_pos"));
@@ -723,7 +725,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             test_view.setVisibility(mView.GONE);
             recyFrag = false;
         }
-        setFragmentLocationListLayout();
+        // sibal 이새끼
+//        setFragmentLocationListLayout();
     }
 
     public void setFragmentMapLayout(){ //맵 프레그먼트 출력 함수
