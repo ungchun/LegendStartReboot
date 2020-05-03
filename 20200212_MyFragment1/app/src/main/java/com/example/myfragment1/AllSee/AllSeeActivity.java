@@ -1,7 +1,9 @@
 package com.example.myfragment1.AllSee;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myfragment1.DataBase_Room.DirectoryRoom.DirectoryEntity;
 import com.example.myfragment1.DataBase_Room.DirectoryRoom.DirectoryViewModel;
 import com.example.myfragment1.DataBase_Room.Repository.DirectoryRepository;
+import com.example.myfragment1.MSMain.Adapter;
+import com.example.myfragment1.MSMain.MainActivity;
 import com.example.myfragment1.R;
 
 import java.util.List;
@@ -31,6 +35,7 @@ public class AllSeeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ms_activity_allsee);
+
         toolbar = findViewById(R.id.realtoolbar);
         toolbar.setTitle("전체보기");
         setSupportActionBar(toolbar);
@@ -49,23 +54,36 @@ public class AllSeeActivity extends AppCompatActivity {
 
         directoryViewModel = ViewModelProviders.of(this).get(DirectoryViewModel.class);
         directoryViewModel.getAllDirectory().observe(this, new Observer<List<DirectoryEntity>>() {
+
             @Override
             public void onChanged(List<DirectoryEntity> directoryEntities) {
                 adapter.setDirectories(directoryEntities);
             }
         });
+
+        adapter.setOnItemClickListener(new Adapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int pos) {
+                Intent intent = new Intent();
+                intent.putExtra("result_pos",String.valueOf(pos));
+                setResult(MainActivity.ALLSEE_ACTIVITY_REPLY_CODE,intent);
+                Log.d("1", String.valueOf(pos));
+                finish();
+//                CustomIntent.customType(getApplicationContext(), "right-to-left");
+            }
+        });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home: { //toolbar의 back키 눌렀을 때 동작
-                finish();
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            switch (item.getItemId()) {
+                case android.R.id.home: { //toolbar의 back키 눌렀을 때 동작
+                    finish();
 //                drawerLayout.isDrawerOpen(GravityCompat.START);
-                CustomIntent.customType(this, "right-to-left");
-                return true;
+                    CustomIntent.customType(this, "right-to-left");
+                    return true;
+                }
             }
-        }
-        return super.onOptionsItemSelected(item);
+            return super.onOptionsItemSelected(item);
     }
 }

@@ -65,9 +65,11 @@ public class AddMainActivity extends Activity {
     EditText Location_Number; // 연락처
     EditText Location_Comment; // 메모
 
+
     ArrayList<ImageData> imageDataArrayList; // 이미지 리스트
     ViewPager viewPager; // 이미지 뷰
-    
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
