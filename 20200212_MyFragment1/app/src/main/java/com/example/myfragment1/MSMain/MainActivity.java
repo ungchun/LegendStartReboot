@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // 기본적으로 쓰이는 것들 선언
     public static final int ADD_MAIN_ACTIVITY_REQUEST_CODE = 1000;
     public static final int ADD_MAIN_ACTIVITY_REPLY_CODE = 2000;
+    public static final int ALLSEE_ACTIVITY_REQUEST_CODE = 1000;
+    public static final int ALLSEE_ACTIVITY_REPLY_CODE = 2000;
     DrawerLayout drawerLayout;
     Boolean drawerFlag = false;
     NavigationView navigationView;
@@ -158,6 +160,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         intentAddLocationFlag = true;
         GlobalFlag.getInstance().setIntentAddLocationFlag(); //인텐트하면 값 바꿔줌
         Log.d("intentAddLocationFlag",  " " + GlobalFlag.getInstance().getIntentAddLocationFlag());
+    }
+
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
     }
 
     // Activity가 처음 실행되는 상태에 제일 먼저 호출되는 메소드 -> 실행시 필요한 각종 초기화 작업
@@ -295,12 +302,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adapter.setOnItemClickListener(new Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
-
                 toolbar.setTitle(recy_title.get(pos));
                 Toast.makeText(getApplicationContext(), recy_title.get(pos), Toast.LENGTH_SHORT).show();
                 Animation animationH = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.translatehide);
                 test_view.setAnimation(animationH);
                 test_view.setVisibility(mView.GONE);
+                recyFrag = false;
+
             }
         });
 
@@ -308,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mView = findViewById(R.id.frameLayout);
 
         recy_allSee = findViewById(R.id.recy_allSee);
+
 
         // spinner 터치(클릭) 시 이벤트처리
         spinner.setOnTouchListener(new View.OnTouchListener() {
@@ -324,7 +333,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(mView.getContext(), AllSeeActivity.class);
-                        startActivity(intent);
+                        startActivityForResult(intent,ALLSEE_ACTIVITY_REQUEST_CODE);
                         CustomIntent.customType(mView.getContext(), "left-to-right");
                         Toast.makeText(getApplicationContext(), "전체보기클릭", Toast.LENGTH_SHORT).show();
                     }
@@ -333,6 +342,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             }
         });
+
+
+
+
 
         //벡프레스 객체 생성
         backPressedForFinish = new BackPressedForFinish(this);
@@ -354,7 +367,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             test_view.setVisibility(mView.GONE);
             Log.d("Search", "2");
             recyFrag = false;
-        }
+          }
         else if(recyFrag == false){
             Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.translate);
             test_view.setAnimation(animation);
@@ -700,6 +713,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 setFragmentLocationListLayout();
             }
         }
+        // 전체보기에서 리스트 클릭하면 AllSeeActivity 에서 MainActivity 로 클릭한 pos 값이 넘어옴
+        if(requestCode == ALLSEE_ACTIVITY_REQUEST_CODE && resultCode == ALLSEE_ACTIVITY_REPLY_CODE){
+            Log.d("1","오긴옴?    "+data.getStringExtra("result_pos"));
+            int pos = Integer.parseInt(data.getStringExtra("result_pos"));
+            toolbar.setTitle(recy_title.get(pos));
+            Animation animationH = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.translatehide);
+            test_view.setAnimation(animationH);
+            test_view.setVisibility(mView.GONE);
+            recyFrag = false;
+        }
+        setFragmentLocationListLayout();
     }
 
     public void setFragmentMapLayout(){ //맵 프레그먼트 출력 함수

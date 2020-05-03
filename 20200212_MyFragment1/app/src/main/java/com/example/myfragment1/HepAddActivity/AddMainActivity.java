@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,12 +13,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -42,6 +49,7 @@ import com.example.myfragment1.MSMain.GlobalFlag;
 import com.example.myfragment1.MSMain.MainActivity;
 import com.example.myfragment1.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +57,6 @@ import java.util.List;
 import static android.content.ContentValues.TAG;
 
 public class AddMainActivity extends Activity {
-    private static final int Main_Activity_Request_Code = 100;
-
     public static final String SET_STORE_FLAG = "com.example.myfragment1.HepAddActivity.AddMainActivity.SET_STORE_FLAG";
 
     EditText Location_Title; // 이름
@@ -59,18 +65,16 @@ public class AddMainActivity extends Activity {
     EditText Location_Number; // 연락처
     EditText Location_Comment; // 메모
 
-    ViewPager viewPager; // 이미지
 
-    private LocationViewModel locationViewModel;
+    ArrayList<ImageData> imageDataArrayList; // 이미지 리스트
+    ViewPager viewPager; // 이미지 뷰
 
-    MainActivity mainActivity; //메인액티비티 객체 생성
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_activity_main);
 
-        //getActionBar().setHomeAsUpIndicator(R.drawable.ic_close_black);
         setTitle("ADD Location");
         init();
         PermissionCheck();
@@ -89,6 +93,8 @@ public class AddMainActivity extends Activity {
     }
 
     public void init() {
+        imageDataArrayList = new ArrayList<>();
+
         Location_Title = ((ClearableEditText) findViewById(R.id.Text_Name)).editText;
         Location_Title.setHint("이름");
 
@@ -120,7 +126,6 @@ public class AddMainActivity extends Activity {
             }
         });
         ((ScrollView) findViewById(R.id.Scroll_Main)).fullScroll(View.FOCUS_DOWN);
-//        locationViewModel = ViewModelProviders.of().get(LocationViewModel.class);
     }
 
     public void onButtonHashTagAddClicked(View v) {
@@ -189,19 +194,17 @@ public class AddMainActivity extends Activity {
             Location_Number.setText(cursor.getString(1));   //1은 번호를 받아옵니다.
             cursor.close();
         }
-
         // 갤러리에서 사진 가져오기
-        else if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
-            final List<Bitmap> bitmaps = new ArrayList<>();
+        else if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             ClipData clipData = data.getClipData();
+
             if (clipData != null) {
                 for (int i = 0; i < clipData.getItemCount(); i++) {
                     try {
                         Uri imageUri = clipData.getItemAt(i).getUri();
                         InputStream is = getContentResolver().openInputStream(imageUri);
-                        Bitmap bitmap = BitmapFactory.decodeStream(is);
+                        imageDataArrayList.add(new ImageData(BitmapFactory.decodeStream(is)));
                         is.close();
-                        bitmaps.add(bitmap);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -209,40 +212,22 @@ public class AddMainActivity extends Activity {
             } else {
                 try {
                     InputStream is = getContentResolver().openInputStream(data.getData());
-                    Bitmap bitmap = BitmapFactory.decodeStream(is);
+                    imageDataArrayList.add(new ImageData(BitmapFactory.decodeStream(is)));
                     is.close();
-                    bitmaps.add(bitmap);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            List<Bitmap> bitmapList = new ArrayList<>();
-            for (Bitmap b : bitmaps) {
-                bitmapList.add(b);
-            }
-            viewPager.setAdapter(new ViewPagerAdapter(this, bitmapList));
-
+            viewPager.setAdapter(new ViewPagerAdapter(this, imageDataArrayList));
         }
         // 카메라
         else if (requestCode == CAPTURE_IMAGE && resultCode == RESULT_OK && data.hasExtra("data")) {
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            if (bitmap != null) {
-                ArrayList<Bitmap> bitmapArrayList = new ArrayList<>();
-                bitmapArrayList.add(bitmap);
-
-                viewPager.setAdapter(new ViewPagerAdapter(getApplicationContext(), bitmapArrayList));
+            if (data != null && data.getData() != null) {
+                imageDataArrayList.add(new ImageData((Bitmap) data.getExtras().get("data")));
+                viewPager.setAdapter(new ViewPagerAdapter(getApplicationContext(), imageDataArrayList));
             }
         }
-    }
-
-    // 화면에 맞게 이미지 크기 조절
-    public Bitmap resizeBitmapImg(Bitmap source, int maxWidth, int maxHeight) {
-        //Bitmap bitmap1 = resizeBitmapImg(bitmap, ((LinearLayout) findViewById(R.id.Layout_Image)).getWidth() / 5, ((LinearLayout) findViewById(R.id.Layout_Image)).getHeight()); *사용법*
-        int newWidth = maxWidth;
-        int newHeight = maxHeight;
-
-        return Bitmap.createScaledBitmap(source, newWidth, newHeight, true);
     }
 
     // 권한 요청
@@ -266,18 +251,27 @@ public class AddMainActivity extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {
                     // 갤러리
-                    /*if (ActivityCompat.checkSelfPermission(AddMainActivity.this.getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) { // 권한 요청
-                        ActivityCompat.requestPermissions(AddMainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
-                        return;
-                    }*/
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    /*Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                     intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+
+                    //기기 기본 갤러리 접근
+                    intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                    //구글 갤러리 접근
+                    // intent.setType("image/*");
+                    startActivityForResult(intent, PICK_IMAGE);*/
+
+                    Intent intent = new Intent(Intent.ACTION_PICK);
                     intent.setType("image/*");
-                    startActivityForResult(intent, PICK_IMAGE);
+                    intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                    intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    //intent.setAction(Intent.ACTION_GET_CONTENT);
+                    //intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                    startActivityForResult(intent,PICK_IMAGE);
                 } else {
                     // 카메라
                     try {
-                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         startActivityForResult(cameraIntent, CAPTURE_IMAGE);
                     } catch (Exception e) {
                         e.printStackTrace();
