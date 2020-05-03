@@ -266,10 +266,12 @@ public class AddMainActivity extends Activity {
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(intent,PICK_IMAGE);
 */
-                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                    Intent intent = new Intent(Intent.ACTION_PICK);
                     //사진을 여러개 선택할수 있도록 한다
+                    intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
                     intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                    intent.setType("image/*");
+                    intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    //intent.setType("image/*");
                     startActivityForResult(Intent.createChooser(intent, "Select Picture"),  PICK_IMAGE);
 
                 } else {

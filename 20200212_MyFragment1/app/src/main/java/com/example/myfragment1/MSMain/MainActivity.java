@@ -714,8 +714,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 setFragmentLocationListLayout();
             }
         }
+
         // ***** 여기 수정 ********//
         // 전체보기 -> 이름변경 -> 변경된 리스트 클릭하면 변경되기전 리스트로 title 바뀜
+
 //         전체보기에서 리스트 클릭하면 AllSeeActivity 에서 MainActivity 로 클릭한 pos 값이 넘어옴
         if(requestCode == ALLSEE_ACTIVITY_REQUEST_CODE && resultCode == ALLSEE_ACTIVITY_REPLY_CODE){
             Log.d("1","오긴옴?    "+data.getStringExtra("result_pos"));
