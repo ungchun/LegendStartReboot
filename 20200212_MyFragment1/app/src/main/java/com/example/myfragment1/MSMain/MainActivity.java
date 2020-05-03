@@ -714,15 +714,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
         // 전체보기에서 리스트 클릭하면 AllSeeActivity 에서 MainActivity 로 클릭한 pos 값이 넘어옴
-        if(requestCode == ALLSEE_ACTIVITY_REQUEST_CODE && resultCode == ALLSEE_ACTIVITY_REPLY_CODE){
-            Log.d("1","오긴옴?    "+data.getStringExtra("result_pos"));
-            int pos = Integer.parseInt(data.getStringExtra("result_pos"));
-            toolbar.setTitle(recy_title.get(pos));
-            Animation animationH = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.translatehide);
-            test_view.setAnimation(animationH);
-            test_view.setVisibility(mView.GONE);
-            recyFrag = false;
-        }
+//        if(requestCode == ALLSEE_ACTIVITY_REQUEST_CODE && resultCode == ALLSEE_ACTIVITY_REPLY_CODE){
+//            Log.d("1","오긴옴?    "+data.getStringExtra("result_pos"));
+//            int pos = Integer.parseInt(data.getStringExtra("result_pos"));
+//            toolbar.setTitle(recy_title.get(pos));
+//            Animation animationH = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.translatehide);
+//            test_view.setAnimation(animationH);
+//            test_view.setVisibility(mView.GONE);
+//            recyFrag = false;
+//        }
         setFragmentLocationListLayout();
     }
 
