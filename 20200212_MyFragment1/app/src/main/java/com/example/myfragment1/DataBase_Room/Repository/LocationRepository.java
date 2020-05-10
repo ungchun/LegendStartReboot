@@ -130,4 +130,7 @@ public class LocationRepository {
         return null;
     }
 
+    public LiveData<List<LocationTagEntity>> getAllLocationTagData() {
+        return getAllLocationTagData;
+    }
 }

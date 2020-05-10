@@ -1,23 +1,14 @@
 package com.example.myfragment1.LocationList_RecyclerView;
 
-
-import android.app.Application;
-import android.nfc.Tag;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfragment1.DataBase_Room.LocationRoom.LocationEntity;
-
-import com.example.myfragment1.DataBase_Room.LocationTagEntity.LocationTagEntity;
-import com.example.myfragment1.DataBase_Room.Repository.LocationRepository;
 import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity;
 import com.example.myfragment1.R;
 

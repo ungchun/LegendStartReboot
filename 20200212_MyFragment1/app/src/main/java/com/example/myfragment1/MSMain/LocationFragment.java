@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfragment1.DataBase_Room.LocationRoom.LocationEntity;
 import com.example.myfragment1.DataBase_Room.LocationTagEntity.LocationTagEntity;
-import com.example.myfragment1.LocationList_RecyclerView.AllDataRappingClass;
+import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity;
 import com.example.myfragment1.LocationList_RecyclerView.LocationViewModel;
 import com.example.myfragment1.LocationList_RecyclerView.MyMediatorForLocationFragment;
 import com.example.myfragment1.LocationList_RecyclerView.RecyclerAdapter;
@@ -83,7 +83,7 @@ public class LocationFragment extends Fragment {
 
     private void setLiveData(){
         locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
-        final LiveData<List<LocationEntity>> locationLivedata = locationViewModel.getAllLocationData_LocationEntity();
+        LiveData<List<LocationEntity>> locationLivedata = locationViewModel.getAllLocationData_LocationEntity();
         final LiveData<List<LocationTagEntity>> locationTagLivedata = locationViewModel.getAllLocationTagData_LocationTagEntity();
 
         //templist.add(locationLivedata);
@@ -91,8 +91,10 @@ public class LocationFragment extends Fragment {
 //        mediatorLiveData.addSource(locationLivedata, value->mediatorLiveData.setValue(value));
 //        mediatorLiveData.getValue();
 //        //
+
         MyMediatorForLocationFragment myMediatorForLocationFragment = new MyMediatorForLocationFragment(getActivity(),recyclerAdapter);
-        myMediatorForLocationFragment.setListLiveData(locationLivedata);
+        myMediatorForLocationFragment.setMediatorLiveData(new MyMediatorLiveData(locationLivedata, locationTagLivedata).getMediatorLiveData());
+
 
 //        recyclerAdapter.setLocationEntities(locationLivedata, locationTagLivedata);
 //
@@ -134,19 +136,38 @@ public class LocationFragment extends Fragment {
 }
 
 class MyMediatorLiveData{
-    private List<?> receiveList;
+    private MediatorLiveData mediatorLiveData = new MediatorLiveData();
 
-    public MediatorLiveData MyMediatorLiveData(List<?> receiveList) {
-        this.receiveList = receiveList;
-        MediatorLiveData mediatorLiveData= new MediatorLiveData();
-        for(Object liveData: receiveList){
-            mediatorLiveData.addSource((LiveData) liveData, new Observer<List<?>>() {
-                @Override
-                public void onChanged(@Nullable List<?> liveList) {
-                    mediatorLiveData.setValue(liveList);
-                }
-            });
-        }
+    //Generic Wild Card 사용법 다시 익히기
+//    public MediatorLiveData MyMediatorLiveData(List<?> receiveList) {
+//        this.receiveList = receiveList;
+//        MediatorLiveData mediatorLiveData= new MediatorLiveData();
+//        for(Object liveData: receiveList){
+//            mediatorLiveData.addSource((LiveData) liveData, new Observer<List<?>>() {
+//                @Override
+//                public void onChanged(@Nullable List<?> liveList) {
+//                    mediatorLiveData.setValue(liveList);
+//                }
+//            });
+//        }
+//        return mediatorLiveData;
+//    }
+    private LiveData<List<LocationEntity>> locationEntity;
+    private LiveData<List<LocationTagEntity>> tagEntity;
+
+    public MyMediatorLiveData(LiveData<List<LocationEntity>> locationEntity, LiveData<List<LocationTagEntity>> tagEntity) {
+        this.locationEntity = locationEntity;
+        this.tagEntity = tagEntity;
+        settingMediatorLivedata();
+    }
+
+    public void settingMediatorLivedata(){
+       mediatorLiveData.addSource(locationEntity, value -> mediatorLiveData.setValue(value));
+       mediatorLiveData.addSource(tagEntity, value->mediatorLiveData.setValue(value));
+    }
+
+
+    public MediatorLiveData getMediatorLiveData() {
         return mediatorLiveData;
     }
 }
