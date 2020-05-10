@@ -59,10 +59,9 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
 
-
     implementation 'me.relex:circleindicator:1.2.2'
 
-
-
+    // image picker
+    implementation 'com.opensooq.supernova:gligar:1.0.0'
 
 }

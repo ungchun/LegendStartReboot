@@ -48,6 +48,7 @@ import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity;
 import com.example.myfragment1.MSMain.GlobalFlag;
 import com.example.myfragment1.MSMain.MainActivity;
 import com.example.myfragment1.R;
+import com.opensooq.supernova.gligar.GligarPicker;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -59,6 +60,7 @@ import static android.content.ContentValues.TAG;
 public class AddMainActivity extends Activity {
     public static final String SET_STORE_FLAG = "com.example.myfragment1.HepAddActivity.AddMainActivity.SET_STORE_FLAG";
 
+    AddMainActivity addMainActivity;
     EditText Location_Title; // 이름
     TextView Location_Address; // 주소
     EditText Location_DetailAddress; // 상세주소
@@ -76,6 +78,7 @@ public class AddMainActivity extends Activity {
         setTitle("ADD Location");
         init();
         PermissionCheck();
+        addMainActivity = this;
     }
 
     public void PermissionCheck() {
@@ -193,7 +196,11 @@ public class AddMainActivity extends Activity {
             cursor.close();
         }
         // 갤러리에서 사진 가져오기
-        else if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        else if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
+            String pathsList[]= data.getExtras().getStringArray(GligarPicker.IMAGES_RESULT); // return list of selected images paths.
+            String result = "Number of selected Images: " + pathsList.length;
+
+            Log.d("@@@@@@@@@@@@@@", "result = " + result);
             ClipData clipData = data.getClipData();
 
             if (clipData != null) {
@@ -266,14 +273,15 @@ public class AddMainActivity extends Activity {
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(intent,PICK_IMAGE);
 */
-                    Intent intent = new Intent(Intent.ACTION_PICK);
-                    //사진을 여러개 선택할수 있도록 한다
-                    intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                    intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    //intent.setType("image/*");
-                    startActivityForResult(Intent.createChooser(intent, "Select Picture"),  PICK_IMAGE);
+//                    Intent intent = new Intent(Intent.ACTION_PICK);
+//                    //사진을 여러개 선택할수 있도록 한다
+//                    intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+//                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//                    intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                    //intent.setType("image/*");
+//                    startActivityForResult(Intent.createChooser(intent, "Select Picture"),  PICK_IMAGE);
 
+                    new GligarPicker().requestCode(PICK_IMAGE).withActivity(AddMainActivity.this).show();
                 } else {
                     // 카메라
                     try {
