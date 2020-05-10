@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -18,9 +19,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfragment1.DataBase_Room.LocationRoom.LocationEntity;
-import com.example.myfragment1.DataBase_Room.Repository.LocationRepository;
+import com.example.myfragment1.DataBase_Room.LocationTagEntity.LocationTagEntity;
+import com.example.myfragment1.LocationList_RecyclerView.AllDataRappingClass;
 import com.example.myfragment1.LocationList_RecyclerView.LocationViewModel;
-import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity;
+import com.example.myfragment1.LocationList_RecyclerView.MyMediatorForLocationFragment;
 import com.example.myfragment1.LocationList_RecyclerView.RecyclerAdapter;
 import com.example.myfragment1.LocationList_RecyclerView.RecyclerviewSecondSwipeDismissHelper;
 import com.example.myfragment1.LocationList_RecyclerView.RecyclerviewSecondSwipeToDoHelper;
@@ -29,6 +31,7 @@ import com.example.myfragment1.LocationList_RecyclerView.SwipeActionInterface;
 import com.example.myfragment1.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LocationFragment extends Fragment {
@@ -40,6 +43,7 @@ public class LocationFragment extends Fragment {
     private RecyclerviewSwipeHelper recyclerviewSwipeHelper = null;
     private FloatingActionButton floatingActionButton;
     private ViewGroup rootView;
+
 
     @Override
     public void onAttach(Context context) {
@@ -62,10 +66,8 @@ public class LocationFragment extends Fragment {
         //ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.ms_fragment_menu, container, false);
         rootView = (ViewGroup) inflater.inflate(R.layout.cs_list_layout, container, false);
         super.onCreate(savedInstanceState);
-
         setRecyclerView();
         setLiveData();
-
         //init();
         setupSwipe();
         return rootView;
@@ -77,31 +79,31 @@ public class LocationFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerAdapter = new RecyclerAdapter();
         recyclerView.setAdapter(recyclerAdapter);
-        sendTagData();
-    }
-    private LiveData<List<TagEntity>> sendTagData(){
-        LocationRepository locationRepository = new LocationRepository(getActivity().getApplication());
-        return locationRepository.getAllTags();
-
     }
 
     private void setLiveData(){
         locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
+        final LiveData<List<LocationEntity>> locationLivedata = locationViewModel.getAllLocationData_LocationEntity();
+        final LiveData<List<LocationTagEntity>> locationTagLivedata = locationViewModel.getAllLocationTagData_LocationTagEntity();
 
+        //templist.add(locationLivedata);
+//        final MediatorLiveData mediatorLiveData = null;
+//        mediatorLiveData.addSource(locationLivedata, value->mediatorLiveData.setValue(value));
+//        mediatorLiveData.getValue();
+//        //
+        MyMediatorForLocationFragment myMediatorForLocationFragment = new MyMediatorForLocationFragment(getActivity(),recyclerAdapter);
+        myMediatorForLocationFragment.setListLiveData(locationLivedata);
 
-        locationViewModel.getAllLocationData_LocationEntity().observe(this, new Observer<List<LocationEntity>>() {
-            @Override
-            public void onChanged(List<LocationEntity> locationEntities) {
-                //Update RecyclerView
-                recyclerAdapter.setLocationEntities(locationEntities);
-            }
-        });
-        locationViewModel.getAllTagData().observe(this, new Observer<List<TagEntity>>() {
-            @Override
-            public void onChanged(List<TagEntity> tagEntities) {
-                recyclerAdapter.setTagEntities(tagEntities);
-            }
-        });
+//        recyclerAdapter.setLocationEntities(locationLivedata, locationTagLivedata);
+//
+////        locationViewModel.getAllLocationData_LocationEntity().observe(this, new Observer<List<LocationEntity>>() {
+////            @Override
+////            public void onChanged(List<LocationEntity> locationEntities) {
+////                //Update RecyclerView
+////                recyclerAdapter.setLocationEntities(mediatorLiveData);
+////
+////            }
+//        });
     }
 
 
@@ -130,3 +132,22 @@ public class LocationFragment extends Fragment {
         });
     }
 }
+
+class MyMediatorLiveData{
+    private List<?> receiveList;
+
+    public MediatorLiveData MyMediatorLiveData(List<?> receiveList) {
+        this.receiveList = receiveList;
+        MediatorLiveData mediatorLiveData= new MediatorLiveData();
+        for(Object liveData: receiveList){
+            mediatorLiveData.addSource((LiveData) liveData, new Observer<List<?>>() {
+                @Override
+                public void onChanged(@Nullable List<?> liveList) {
+                    mediatorLiveData.setValue(liveList);
+                }
+            });
+        }
+        return mediatorLiveData;
+    }
+}
+

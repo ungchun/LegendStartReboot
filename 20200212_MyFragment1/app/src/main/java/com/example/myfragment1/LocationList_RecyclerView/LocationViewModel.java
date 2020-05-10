@@ -17,12 +17,15 @@ import java.util.List;
 public class LocationViewModel extends AndroidViewModel {
     private LocationRepository repository;
     private LiveData<List<LocationEntity>> allLocationData;
+    private LiveData<List<LocationTagEntity>> allLocationTagData;
+
     private LiveData<List<TagEntity>> allTagData;
     public LocationViewModel(@NonNull Application application) {
         super(application);
         repository = new LocationRepository(application);
         allLocationData = repository.getAllLocations();
         allTagData = repository.getAllTags();
+        allLocationTagData = repository.getAllLocationTagData();
 
     }
     public int insert_LocationEntity(LocationEntity locationEntity){
@@ -35,7 +38,7 @@ public class LocationViewModel extends AndroidViewModel {
         repository.delete_Location(locationEntity);
         return locationEntity;
     }
-    public LocationTagEntity SearchTagByLocationID_LocationTagEntity(int locationID){
+    public List<LocationTagEntity> SearchTagByLocationID_LocationTagEntity(int locationID){
         return repository.searchByLocationID_LocationTag(locationID);
     }
     public void insert_TagEntity(TagEntity... tagEntities){
@@ -60,6 +63,9 @@ public class LocationViewModel extends AndroidViewModel {
     }
     public LiveData<List<TagEntity>> getAllTagData(){
         return allTagData;
+    }
+    public LiveData<List<LocationTagEntity>> getAllLocationTagData_LocationTagEntity(){
+        return allLocationTagData;
     }
 
     public List<TagEntity> searchTagByLocationID_TagEntity(int position){

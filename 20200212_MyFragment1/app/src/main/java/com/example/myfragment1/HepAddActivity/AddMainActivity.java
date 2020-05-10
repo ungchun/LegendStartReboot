@@ -316,7 +316,15 @@ public class AddMainActivity extends Activity {
         LocationRepository locationRepository = new LocationRepository(getApplication());
         LocationEntity locationEntity = new LocationEntity(title, address, detailAddr, number, comment, latitude, longitude, timestamp);
         int location_id = locationRepository.insert_Location(locationEntity);
+        /*
+        LocationDatabase locationDatabase = Room.databaseBuilder(this, LocationDatabase.class, "LocationEntity").allowMainThreadQueries().build();
+        locationDatabase.locationEntity_dao().insert(locationEntity);
+        Log.d("tag","END Location insert ");
 
+
+        locationDatabase.close();
+
+         */
         if(!_hashTag.isEmpty()) {
             for (String tag : _hashTag) {
                 int tag_id = locationRepository.insert_Tag(new TagEntity(tag));

@@ -17,7 +17,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    sourceSets { main { java.srcDirs = ['src/main/java', 'src/main/java/2'] } }
+    //Lambda level 8 (Java 8)
+    //For LiveData Mediator
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
 }
 
 dependencies {
