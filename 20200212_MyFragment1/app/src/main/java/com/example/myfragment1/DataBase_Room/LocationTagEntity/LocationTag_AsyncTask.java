@@ -68,7 +68,7 @@ public class LocationTag_AsyncTask {
 
         @Override
         protected List<LocationTagEntity> doInBackground(Integer... integers) {
-            return locationTag_dao.getDataByLocationId(integers[0]);
+            return (List<LocationTagEntity>) new SendingArrayList().SendingArrayList(locationTag_dao.getDataByLocationId(integers[0]));
         }
     }
 }

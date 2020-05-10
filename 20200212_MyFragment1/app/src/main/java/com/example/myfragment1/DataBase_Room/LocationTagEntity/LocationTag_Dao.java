@@ -25,4 +25,5 @@ public interface LocationTag_Dao {
 
     @Query("SELECT * FROM LocationTagTable WHERE location_id = :locationId")
     List<LocationTagEntity> getDataByLocationId(int locationId);
+
 }

@@ -2,16 +2,22 @@ package com.example.myfragment1.LocationList_RecyclerView;
 
 
 import android.app.Application;
+import android.nfc.Tag;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfragment1.DataBase_Room.LocationRoom.LocationEntity;
 
+import com.example.myfragment1.DataBase_Room.LocationTagEntity.LocationTagEntity;
+import com.example.myfragment1.DataBase_Room.Repository.LocationRepository;
 import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity;
 import com.example.myfragment1.R;
 
@@ -21,6 +27,7 @@ import java.util.List;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ListHolder> {
     private List<LocationEntity> locationEntities = new ArrayList<>();
     private List<TagEntity> tagEntities = new ArrayList<>();
+
 
     public RecyclerAdapter() {
 //        this.application = application;
@@ -54,16 +61,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ListHo
         return locationEntities.size();
     }
 
-    public void setLocationEntities(List<LocationEntity> locationEntities){
-        this.locationEntities = locationEntities;
-        //Updating DataAdapter
+    public void setLocationEntities(AllDataRappingClass allDataRappingClass){
+        this.locationEntities = allDataRappingClass.getLocationEntities();
+
         notifyDataSetChanged();
     }
 
-    public void setTagEntities(List<TagEntity> tagEntities) {
-        this.tagEntities = tagEntities;
-        notifyDataSetChanged();
-    }
+
 
     public LocationEntity getLocationEntityAt(int position){
         return locationEntities.get(position);

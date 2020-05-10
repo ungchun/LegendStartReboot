@@ -17,7 +17,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    sourceSets { main { java.srcDirs = ['src/main/java', 'src/main/java/2'] } }
+    //Lambda level 8 (Java 8)
+    //For LiveData Mediator
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
 }
 
 dependencies {
@@ -58,7 +64,6 @@ dependencies {
     // Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
-
 
     implementation 'me.relex:circleindicator:1.2.2'
 

@@ -41,21 +41,21 @@ public class RecyclerviewSecondSwipeDismissHelper extends ItemTouchHelper.Simple
 
     @Override
     public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
-        //Undo
-
-        locationEntity = locationViewModel.delete_LocationEntity(recyclerAdapter.getLocationEntityAt(viewHolder.getAdapterPosition()));
-        int locationEntityID = locationEntity.getId();
-
-        locationTagEntity = locationViewModel.SearchTagByLocationID_LocationTagEntity(locationEntityID);
-
-        if(locationEntity != null){
-            tagEntities = locationViewModel.searchTagByLocationID_TagEntity(locationEntityID).toArray(new TagEntity[0]);
-            locationViewModel.delete_TagEntity(tagEntities);
-            Log.d("tag","Tag Dismiss Success");
-            locationViewModel.delete_LocationTagEntity(locationTagEntity);
-        }
-
-        Log.d("tag","Successful dismiss Tag");
+//        //Undo
+//
+//        locationEntity = locationViewModel.delete_LocationEntity(recyclerAdapter.getLocationEntityAt(viewHolder.getAdapterPosition()));
+//        long locationEntityID = locationEntity.getId();
+//
+//        locationTagEntity = locationViewModel.SearchTagByLocationID_LocationTagEntity(locationEntityID);
+//
+//        if(locationEntity != null){
+//            tagEntities = locationViewModel.searchTagByLocationID_TagEntity(locationEntityID).toArray(new TagEntity[0]);
+//            locationViewModel.delete_TagEntity(tagEntities);
+//            Log.d("tag","Tag Dismiss Success");
+//            locationViewModel.delete_LocationTagEntity(locationTagEntity);
+//        }
+//
+//        Log.d("tag","Successful dismiss Tag");
 
         Snackbar.make(viewHolder.itemView, "", Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
             @Override
