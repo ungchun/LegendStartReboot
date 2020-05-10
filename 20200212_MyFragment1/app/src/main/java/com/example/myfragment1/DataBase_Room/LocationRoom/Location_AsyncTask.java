@@ -8,7 +8,6 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class Location_AsyncTask {
-    private LocationEntity_Dao locationEntity_dao;
     private LiveData<List<LocationEntity>> allLocations;
 
     public Location_AsyncTask(Application application) {

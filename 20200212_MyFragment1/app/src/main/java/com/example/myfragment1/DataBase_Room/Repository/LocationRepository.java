@@ -20,6 +20,7 @@ import com.example.myfragment1.DataBase_Room.TagEntity.TagAsyncTask;
 import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity;
 import com.example.myfragment1.DataBase_Room.TagEntity.TagEntity_Dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -35,6 +36,7 @@ public class LocationRepository {
     private LiveData<List<LocationEntity>> allLocations;
     private LiveData<List<TagEntity>> allTags;
     private LiveData<List<LocationTagEntity>> allLocationTagData;
+    private LiveData<List<LocationTagEntity>> getAllLocationTagData;
     private LocationTag_AsyncTask locationTag_asyncTask;
     public LiveData<List<TagEntity>> getAllTags() {
         return allTags;
@@ -50,6 +52,7 @@ public class LocationRepository {
 
         allLocations = locationEntity_dao.getAllData();
         allLocationTagData = locationTag_dao.getAllLocationTagData();
+
         allTags = tagEntity_dao.getAllData();
         locationTag_asyncTask = new LocationTag_AsyncTask(application);
     }
@@ -88,12 +91,17 @@ public class LocationRepository {
         new DeleteLocationTagAsyncTask(locationTag_dao).execute(locationTagEntity);
         return locationTagEntity;
     }
-    public void update_LocationTag(LocationTagEntity locationTagEntity){
-        new UpdateLocationTagAsyncTask(locationTag_dao).execute(locationTagEntity);
+
+
+    public List<LocationTagEntity> searchByLocationID_LocationTag(int locationID){
+        try {
+            return new LocationTag_AsyncTask.SearchForTagIDByLocationID(locationTag_dao).execute(locationID).get();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
-    public LocationTagEntity searchByLocationID_LocationTag(int locationID){
-        return ((List<LocationTagEntity>) new SearchForTagIDByLocationID(locationTag_dao).execute(locationID)).get(0);
-    }
+
     public List<TagEntity> searchAboutLocationId(int position){
         final List<TagEntity> result = (List<TagEntity>) new TagAsyncTask.SearchAboutLocationId(tagEntity_dao).execute(position);
         return result;
@@ -110,4 +118,8 @@ public class LocationRepository {
     public LiveData<List<LocationEntity>> getAllLocations(){
         return allLocations;
     }
+    public LiveData<List<LocationTagEntity>> getAllLocationTagData(){
+        return allLocationTagData;
+    }
+
 }

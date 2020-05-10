@@ -14,7 +14,6 @@
         <activity android:name=".MSMain.todoActivity" />
         <activity android:name=".MSMain.settingActivity" />
         <activity android:name=".MSMain.homeActivity" />
-        <activity android:name=".LocationList_RecyclerView.LocationList" />
         <activity android:name=".HepAddActivity.AddMainActivity"/>
         <activity android:name=".MSMain.MainActivity"
             android:windowSoftInputMode="adjustPan">
